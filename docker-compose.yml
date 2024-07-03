@@ -1,0 +1,17 @@
+
+services:
+  api:
+    build: ./api
+    ports:
+      - "5000:5000"
+
+  app:
+    build:
+      context: ./app
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "80:3000"
+    depends_on:
+      - api
+    volumes:
+      - ./app:/usr/src/app
