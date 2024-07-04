@@ -73,23 +73,16 @@ io.on('connection', (socket) => {
   }
 
   if (gameRoomId in gameRooms) {
-    socket.join(gameRoomId);
-    socket.emit('gameState', gameRooms[gameRoomId].getGameState(deviceId));
-    console.log(`${deviceId} connected to ${gameRoomId}`);
+    gameRooms[gameRoomId].addSocket(socket, deviceId);
   } else {
     console.log("No such gameroom - disconnecting...");
-    socket.emit('noGameRoom', 'No such game room');
+    socket.emit('gameState', {finished: true});
     socket.disconnect(true);
   }
 
-  // Handle messages from clients to a specific room
-  socket.on('message', ({ gameRoomId, message }) => {
-    io.to(gameRoomId).emit('message', message);
-  });
-
   socket.on('disconnect', () => {
-    console.log(`${deviceId} disconnected from ${gameRoomId}`);
-    socket.leave(gameRoomId);
+    const gameRoom = gameRooms[gameRoomId];
+    if (gameRoom) gameRoom.removeSocket(socket, deviceId);
   });
 });
 
