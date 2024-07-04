@@ -13,11 +13,20 @@ function App() {
 
   const [deviceId, setDeviceId] = useState(Cookies.get("deviceId"));
 
+  let fetchingDeviceId = false;
+
   useEffect(() => {
+
+    if (fetchingDeviceId) return;
+    fetchingDeviceId = true;
+
     if (!deviceId) {
       fetch('/api/device-id')
         .then(response => response.text())
-        .then(data => setDeviceId(data));
+        .then(receivedDeviceId => {
+          setDeviceId(receivedDeviceId);
+          fetchingDeviceId = false;
+        });
     }
   }, [deviceId]);
 
@@ -38,7 +47,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route path="/create-game-room" element={<CreateGameRoomPage />} />
-            <Route path="/game-room/:roomId" element={<GameRoomPage />} />
+            <Route path="/game-room/:gameRoomId" element={<GameRoomPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
