@@ -2,11 +2,15 @@
 const express = require('express');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const GameRoom = require('./GameRoom.js');
 
 const app = express();
 app.use(cookieParser());
+const server = http.createServer(app);
+const io = socketIo(server);
 
 const port = 5000;
 
@@ -34,7 +38,7 @@ app.get('/api/device-id', (req, res) => {
 app.post('/api/create-game-room', (req, res) => {
   
   const { deviceId } = req.cookies;
-  if (!deviceId) return res.status(401).send('Unauthorized');
+  if (!deviceId) return res.status(401);
 
   let gameRoomId = "";
 
@@ -49,7 +53,43 @@ app.post('/api/create-game-room', (req, res) => {
   res.send(gameRoomId);
 });
 
+io.on('connection', (socket) => {
+  const cookies = socket.handshake.headers.cookie
+    ? Object.fromEntries(
+        socket.handshake.headers.cookie.split('; ').map(c => c.split('='))
+      )
+    : {};
+  const deviceId = cookies.deviceId;
+  console.log(`${deviceId} connected!`);
 
-app.listen(port, () => {
+  if (!deviceId) {
+    console.log("Disconnecting....")
+    socket.disconnect(true);
+  }
+
+  // Join a room with a specific ID
+  socket.on('joinGameRoom', (gameRoomId) => {
+    socket.join(gameRoomId);
+    console.log(`User joined room ${gameRoomId}`);
+  });
+
+  // Leave a room
+  socket.on('leaveGameRoom', (gameRoomId) => {
+    socket.leave(gameRoomId);
+    console.log(`User left room ${gameRoomId}`);
+  });
+
+  // Handle messages from clients to a specific room
+  socket.on('message', ({ gameRoomId, message }) => {
+    io.to(gameRoomId).emit('message', message);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`${deviceId} A user disconnected`);
+  });
+});
+
+
+server.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 
 function GameRoomPage() {
+
   return <h2>Game Page</h2>;
 }
 

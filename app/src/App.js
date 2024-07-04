@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 
+import socket from './socket.js';
 import HomePage from './HomePage.js';
 import GameRoomPage from './GameRoomPage.js';
 import CreateGameRoomPage from './CreateGameRoomPage.js';

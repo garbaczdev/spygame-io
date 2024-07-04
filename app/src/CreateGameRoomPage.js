@@ -12,7 +12,8 @@ function CreateGameRoomPage() {
       .then(gameRoomId => navigate(`/game-room/${gameRoomId}`));
   }, [navigate]);
 
-  return <h2>Create Game Page</h2>;
+  // This can be a waiting queue in the future
+  return <></>;
 }
 
 export default CreateGameRoomPage;

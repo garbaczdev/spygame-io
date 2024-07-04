@@ -3,10 +3,12 @@ class GameRoom {
   constructor(id, hostDeviceId) {
     this.id = id;
     this.hostDeviceId = hostDeviceId;
+
+    this.creationTime = Date.now();
   }
 
   echo() {
-    return "id"
+    return this.id;
   }
 }
 
