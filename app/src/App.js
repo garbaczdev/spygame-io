@@ -13,19 +13,12 @@ function App() {
 
   const [deviceId, setDeviceId] = useState(Cookies.get("deviceId"));
 
-  let fetchingDeviceId = false;
-
   useEffect(() => {
-
-    if (fetchingDeviceId) return;
-    fetchingDeviceId = true;
-
     if (!deviceId) {
       fetch('/api/device-id')
         .then(response => response.text())
         .then(receivedDeviceId => {
           setDeviceId(receivedDeviceId);
-          fetchingDeviceId = false;
         });
     }
   }, [deviceId]);

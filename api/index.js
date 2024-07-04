@@ -39,7 +39,8 @@ app.post('/api/create-game-room', (req, res) => {
   let gameRoomId = "";
 
   do {
-    gameRoomId = crypto.randomBytes(8).toString('hex').slice(0, 8);
+    // gameRoomId = crypto.randomBytes(8).toString('hex').slice(0, 8);
+    gameRoomId = Array(6).fill(0).map(i => crypto.randomInt(0, 9).toString()).join("")
   } while (gameRoomId in gameRooms);
 
   gameRooms[gameRoomId] = new GameRoom(gameRoomId, deviceId);
