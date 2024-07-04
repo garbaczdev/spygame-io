@@ -60,24 +60,26 @@ io.on('connection', (socket) => {
       )
     : {};
   const deviceId = cookies.deviceId;
-  console.log(`${deviceId} connected!`);
 
   if (!deviceId) {
-    console.log("Disconnecting....")
+    console.log("No deviceId - disconnecting...");
     socket.disconnect(true);
   }
 
-  // Join a room with a specific ID
-  socket.on('joinGameRoom', (gameRoomId) => {
-    socket.join(gameRoomId);
-    console.log(`User joined room ${gameRoomId}`);
-  });
+  const gameRoomId = socket.handshake.query.gameRoomId;
+  if (!gameRoomId) {
+    console.log("No gameRoomId - disconnecting...");
+    socket.disconnect(true);
+  }
 
-  // Leave a room
-  socket.on('leaveGameRoom', (gameRoomId) => {
-    socket.leave(gameRoomId);
-    console.log(`User left room ${gameRoomId}`);
-  });
+  if (gameRoomId in gameRooms) {
+    socket.join(gameRoomId);
+    console.log(`${deviceId} connected to ${gameRoomId}`);
+  } else {
+    console.log("No such gameroom - disconnecting...");
+    socket.emit('noGameRoom', 'No such game room');
+    socket.disconnect(true);
+  }
 
   // Handle messages from clients to a specific room
   socket.on('message', ({ gameRoomId, message }) => {
@@ -85,7 +87,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log(`${deviceId} A user disconnected`);
+    console.log(`${deviceId} disconnected from ${gameRoomId}`);
+    socket.leave(gameRoomId);
   });
 });
 
