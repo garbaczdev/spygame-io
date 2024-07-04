@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
+
+import HomePage from './HomePage.js';
+import GameRoomPage from './GameRoomPage.js';
 
 
 function App() {
@@ -9,16 +13,32 @@ function App() {
 
   useEffect(() => {
     if (!deviceId) {
-      fetch('/api/device-id', {credentials: 'include'})
+      fetch('/api/device-id')
         .then(response => response.text())
         .then(data => setDeviceId(data));
     }
-  }, []);
+  }, [deviceId]);
 
   return (
-    <div className="App">
-      {deviceId}
-    </div>
+    <>
+      {
+        deviceId === ""
+        ? <div></div>
+        :
+        <Router>
+          <nav>
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/game-room">Game</Link></li>
+            </ul>
+          </nav>
+          <Routes>
+            <Route exact path="/" element={<HomePage />} />
+            <Route path="/game-room" element={<GameRoomPage />} />
+          </Routes>
+        </Router>
+      }
+    </>
   );
 }
 
