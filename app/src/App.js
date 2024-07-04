@@ -5,6 +5,8 @@ import Cookies from 'js-cookie';
 
 import HomePage from './HomePage.js';
 import GameRoomPage from './GameRoomPage.js';
+import CreateGameRoomPage from './CreateGameRoomPage.js';
+import NotFoundPage from './NotFoundPage.js';
 
 
 function App() {
@@ -29,12 +31,15 @@ function App() {
           <nav>
             <ul>
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/game-room">Game</Link></li>
+              <li><Link to="/create-game-room">Create Game</Link></li>
+              <li><Link to="/game-room/abc">Game</Link></li>
             </ul>
           </nav>
           <Routes>
             <Route exact path="/" element={<HomePage />} />
-            <Route path="/game-room" element={<GameRoomPage />} />
+            <Route path="/create-game-room" element={<CreateGameRoomPage />} />
+            <Route path="/game-room/:roomId" element={<GameRoomPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
       }
