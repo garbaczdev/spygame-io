@@ -74,6 +74,7 @@ io.on('connection', (socket) => {
 
   if (gameRoomId in gameRooms) {
     socket.join(gameRoomId);
+    socket.emit('gameState', gameRooms[gameRoomId].getGameState(deviceId));
     console.log(`${deviceId} connected to ${gameRoomId}`);
   } else {
     console.log("No such gameroom - disconnecting...");

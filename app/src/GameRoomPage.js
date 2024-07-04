@@ -52,6 +52,10 @@ function GameRoomPage() {
       navigate('/');
     });
 
+    socket.on('gameState', (gameState) => {
+      console.log(gameState);
+    });
+
     // Add other socket event listeners here
 
     return () => {
