@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 
-import socket from './socket.js';
 import HomePage from './HomePage.js';
 import GameRoomPage from './GameRoomPage.js';
 import CreateGameRoomPage from './CreateGameRoomPage.js';
@@ -11,7 +10,6 @@ import NotFoundPage from './NotFoundPage.js';
 
 
 function App() {
-
   const [deviceId, setDeviceId] = useState(Cookies.get("deviceId"));
 
   useEffect(() => {
@@ -27,9 +25,8 @@ function App() {
   return (
     <>
       {
-        deviceId === ""
-        ? <div></div>
-        :
+        deviceId
+        ?
         <Router>
           <nav>
             <ul>
@@ -45,6 +42,8 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
+        :
+        <></>
       }
     </>
   );
