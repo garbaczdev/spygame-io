@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const http = require('http');
 const socketIo = require('socket.io');
 
+const { GameRoomManager } = require('./game-src/GameRoomManager.js');
 const { GameRoom } = require('./game-src/GameRoom.js');
 const { GameRoomUtils } = require('./game-src/GameRoomUtils.js');
 
@@ -13,9 +14,8 @@ app.use(cookieParser());
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const port = 5000;
 
-const gameRooms = {}
+const gameRoomManager = new GameRoomManager();
 
 
 app.get('/api', (req, res) => {
@@ -37,21 +37,10 @@ app.get('/api/device-id', (req, res) => {
 });
 
 app.post('/api/create-game-room', (req, res) => {
-  
   const { deviceId } = req.cookies;
   if (!deviceId) return res.status(401);
 
-  let gameRoomId = "";
-
-  do {
-    // gameRoomId = crypto.randomBytes(8).toString('hex').slice(0, 8);
-    gameRoomId = Array(6).fill(0).map(i => crypto.randomInt(0, 9).toString()).join("")
-  } while (gameRoomId in gameRooms);
-
-  gameRooms[gameRoomId] = new GameRoom(gameRoomId, deviceId);
-  console.log(gameRoomId);
-
-  res.send(gameRoomId);
+  res.send(gameRoomManager.createRoom(deviceId));
 });
 
 io.on('connection', (socket) => {
@@ -72,21 +61,11 @@ io.on('connection', (socket) => {
     GameRoomUtils.killSocket(socket, "gameRoomId not provided");
     return;
   }
-
-  if (!(gameRoomId in gameRooms)) {
-    GameRoomUtils.killSocket(socket, "No such gameroom with that ID!");
-    return;
-  }
-
-  gameRooms[gameRoomId].addSocket(socket, deviceId);
-
-  socket.on('disconnect', () => {
-    const gameRoom = gameRooms[gameRoomId];
-    if (gameRoom) gameRoom.removeSocket(socket, deviceId);
-  });
+  
+  gameRoomManager.addSocket(socket, gameRoomId, deviceId);
 });
 
 
-server.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+server.listen(5000, () => {
+  console.log(`Example app listening at http://localhost:5000`);
 });

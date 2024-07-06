@@ -1,4 +1,2 @@
-1. Create a GameRoomManager class
 2. Remove empty games
 3. Do not allow duplicate names
-4. Join to games that the player is already in!
