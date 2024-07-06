@@ -50,13 +50,17 @@ class GamePhaseJoin extends GamePhase {
   action(player, actionData) {
     console.log(player.deviceId, actionData);
     if (actionData.phase === "join" && actionData.type == "provideName") {
-      let name = actionData.data.name 
+      let name = actionData.data.name;
       if (!name) {
         player.kill("No name in actionData");
         return
       }
-      name = String(name);
+      name = String(name).trim();
       if (name === "" || name.length > 20) return;
+      
+      const allNames = this.gameRoom.players.map(player => player.name.toLowerCase());
+      console.log(allNames, name)
+      if (allNames.includes(name.toLowerCase())) return;
       
       player.name = name;
       this.gameRoom.updateAllPlayers();
