@@ -1,9 +1,9 @@
 
 class Player {
-  constructor(deviceId, name, sockets) {
+  constructor(deviceId, sockets, name) {
     this.deviceId = deviceId;
-    this.name = name;
     this.sockets = sockets;
+    this.name = name;
   }
 }
 
@@ -16,42 +16,43 @@ class GamePhase {
   getState(deviceId) {}
   action(socket, deviceId, data) {}
 
-  acceptsNewPlayers() {
-    return false;
+  addNewPlayer(socket, deviceId) {
+    socket.emit('gameState', {finished: true});
+    socket.disconnect(true);
   }
 }
 
 class GameJoinPhase extends GamePhase {
-  acceptsNewPlayers() {
-    return true;
-  }
 
   getState(deviceId) {
-    const playerWithDeviceId = this.gameRoom.players.find(
-      player => player.deviceId === deviceId
-    );
+    // const playerWithDeviceId = this.gameRoom.players.find(
+    //   player => player.deviceId === deviceId
+    // );
 
-    return {
-      name: "join",
-      player: {
-        created: !!playerWithDeviceId,
-        name: !!playerWithDeviceId ? playerWithDeviceId.name : "",
-        isHost: deviceId === this.gameRoom.hostDeviceId
-      }
-    }
+    // return {
+    //   name: "join",
+    //   player: {
+    //     created: !!playerWithDeviceId,
+    //     name: !!playerWithDeviceId ? playerWithDeviceId.name : "",
+    //     isHost: deviceId === this.gameRoom.hostDeviceId
+    //   }
+    // }
   }
 
   action(socket, deviceId, data) {
+    
+  }
 
+  addNewPlayer(socket, deviceId) {
+    if (this.gameRoom.players.find(player => player.deviceId === deviceId)) return;
+    const newPlayer = new Player(deviceId, [socket], "");
+    this.gameRoom.players.push(newPlayer);
   }
 }
 
 
 class GameRoom {
   constructor(id, hostDeviceId) {
-
-    // console.log(`${deviceId} connected to ${gameRoomId}`);
-    // console.log(`${deviceId} disconnected from ${gameRoomId}`);
     this.id = id;
     this.hostDeviceId = hostDeviceId;
 
@@ -59,7 +60,6 @@ class GameRoom {
 
     this.gamePhase = new GameJoinPhase();
     this.players = [];
-    this.newPlayerSockets = [];
   }
 
   addSocket(socket, deviceId) {
@@ -67,20 +67,13 @@ class GameRoom {
     
     if (playerWithDeviceId) {
       if (!playerWithDeviceId.sockets.includes(socket)) {
-        playerWithDeviceId.sockets.push(socket)
+        playerWithDeviceId.sockets.push(socket);
       }      
     } else {
-      if (!this.gamePhase.acceptsNewPlayers()) {
-        socket.emit('gameState', {finished: true});
-        socket.disconnect(true);
-        return;
-      }
-      if (!this.newPlayerSockets.includes(socket)) {
-        this.newPlayerSockets.push(socket);
-      }
+      this.gamePhase.addNewPlayer(socket, deviceId);
     }
 
-    socket.emit('gameState', this.getState(deviceId))
+    socket.emit('gameState', this.gamePhase.getState(deviceId));
   }
 
   removeSocket(socket, deviceId) {
@@ -91,12 +84,6 @@ class GameRoom {
         s => s != socket
       );
     }
-
-    this.newPlayerSockets = this.newPlayerSockets.filter(s => s != socket);
-  }
-
-  getState(deviceId) {
-    return this.gamePhase.getState(deviceId);
   }
 }
 
