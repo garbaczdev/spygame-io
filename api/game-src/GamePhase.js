@@ -59,7 +59,6 @@ class GamePhaseJoin extends GamePhase {
       if (name === "" || name.length > 20) return;
       
       const allNames = this.gameRoom.players.map(player => player.name.toLowerCase());
-      console.log(allNames, name)
       if (allNames.includes(name.toLowerCase())) return;
       
       player.name = name;

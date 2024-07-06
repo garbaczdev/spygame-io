@@ -59,6 +59,15 @@ class GameRoom {
       }) 
     });
   }
+
+  canBeDeleted() {
+    if (
+      this.players.every(player => player.sockets.length === 0)
+      && this.players.every(player => player.name.length === 0)
+    ) return true;
+    
+    return false;
+  }
 }
 
 module.exports = { GameRoom };
