@@ -14,6 +14,10 @@ class Player {
     this.name = name;
     this.isHost = isHost;
   }
+
+  kill(message) {
+    this.sockets.forEach(socket => GameRoomUtils.killSocket(socket, message));
+  }
 }
 
 
@@ -28,14 +32,12 @@ class GamePhase {
         return {
           "name": otherPlayer.name,
           "isHost": otherPlayer.isHost,
-          "isComplete": otherPlayer.name != "",
           "isCurrentPlayer": otherPlayer === player,
         }  
       }),
       player: {
         "name": player.name,
         "isHost": player.isHost,
-        "isComplete": player.name != ""
       },
       phase: this.getPhaseState(player),
     }
@@ -43,9 +45,9 @@ class GamePhase {
 
   getPhaseState(player) {}
 
-  action(player, data) {
+  action(player, actionData) {
     player.sockets.forEach(socket => {
-      GameRoomUtils.killSocket(socket, `state ${data} not recognized.`);
+      GameRoomUtils.killSocket(socket, `state ${JSON.stringify(actionData)} not recognized.`);
     })
   }
 
@@ -64,13 +66,23 @@ class GameJoinPhase extends GamePhase {
     }
   }
 
-  action(player, data) {
-    console.log(player, data);
-    if (data.phase === "join") {
-
-    } else {
-      super.action(player, data);
+  action(player, actionData) {
+    console.log(player.deviceId, actionData);
+    if (actionData.phase === "join" && actionData.type == "provideName") {
+      let name = actionData.data.name 
+      if (!name) {
+        player.kill("No name in actionData");
+        return
+      }
+      name = String(name);
+      if (name === "" || name.length > 20) return;
+      
+      player.name = name;
+      this.gameRoom.updateAllPlayers();
+      return;
     }
+
+    super.action(player, actionData);
   }
 
   addNewPlayer(socket, deviceId) {
@@ -106,11 +118,11 @@ class GameRoom {
 
     const player = this.players.find(player => player.deviceId === deviceId);
 
-    socket.on('action', data => {
-      if (!data.phase) {
+    socket.on('action', actionData => {
+      if (!actionData.phase) {
         GameRoomUtils.killSocket(socket, `action data validation error`);
       } else {
-        this.gamePhase.action(data);
+        this.gamePhase.action(player, actionData);
       }
     })
 

@@ -6,6 +6,36 @@ import io from 'socket.io-client';
 
 function JoinGamePhaseComponent({socket, gameState}) {
 
+  const [nameInputValue, setNameInputValue] = useState("");
+
+  return (
+    <>
+    {
+      gameState.phase.state.nameRequired
+      ?
+      <div>
+        <h2>Provide Name</h2>
+        <input type="text" value={nameInputValue} onChange={(event) => setNameInputValue(event.target.value)} />
+        <button onClick={
+          () => {
+            socket.emit("action", {
+              phase: "join",
+              type: "provideName",
+              data: {
+                name: nameInputValue
+              }
+            });
+            setNameInputValue("");
+          }
+        }>
+          Submit
+        </button>
+      </div>
+      :
+      <h2>{JSON.stringify(gameState.allPlayers.map(player => player.name))}</h2>
+    }
+    </>
+  ); 
   return <h2>{JSON.stringify(gameState)}</h2>
 }
 
