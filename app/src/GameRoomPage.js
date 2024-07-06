@@ -26,6 +26,7 @@ function JoinGamePhaseComponent({socket, gameState}) {
           className="btn btn-primary btn-lg"
           onClick={
           () => {
+            if (nameInputValue.length === 0) return;
             socket.emit("action", {
               phase: "join",
               type: "provideName",
@@ -48,10 +49,15 @@ function JoinGamePhaseComponent({socket, gameState}) {
           ).map(
             (player, index) => 
             <div 
+              key={index}
               className="border p-3 mb-1"
               style={{ width: '80vw' }}
             >
-              {player.name}
+              {
+                player.name
+                + (player.isCurrentPlayer ? " (You) " : "")
+                + (player.isHost ? " (Host) " : "")
+              }
             </div>
           )
         }
