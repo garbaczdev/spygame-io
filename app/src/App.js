@@ -27,21 +27,16 @@ function App() {
       {
         deviceId
         ?
-        <Router>
-          <nav>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/create-game-room">Create Game</Link></li>
-              <li><Link to="/game-room/abc">Game</Link></li>
-            </ul>
-          </nav>
-          <Routes>
-            <Route exact path="/" element={<HomePage />} />
-            <Route path="/create-game-room" element={<CreateGameRoomPage />} />
-            <Route path="/game-room/:gameRoomId" element={<GameRoomPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Router>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+          <Router>
+            <Routes>
+              <Route exact path="/" element={<HomePage />} />
+              <Route path="/create-game-room" element={<CreateGameRoomPage />} />
+              <Route path="/game-room/:gameRoomId" element={<GameRoomPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Router>
+        </div>
         :
         <></>
       }

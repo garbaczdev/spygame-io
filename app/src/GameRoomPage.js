@@ -13,10 +13,18 @@ function JoinGamePhaseComponent({socket, gameState}) {
     {
       gameState.phase.state.nameRequired
       ?
-      <div>
-        <h2>Provide Name</h2>
-        <input type="text" value={nameInputValue} onChange={(event) => setNameInputValue(event.target.value)} />
-        <button onClick={
+      <div className="container text-center">
+        <h1 className="m-5">New Player</h1>
+        <input 
+          type="text" 
+          className="form-control mb-3"
+          placeholder="Name"
+          value={nameInputValue} 
+          onChange={(event) => setNameInputValue(event.target.value)}
+        />
+        <button 
+          className="btn btn-primary btn-lg"
+          onClick={
           () => {
             socket.emit("action", {
               phase: "join",
@@ -28,15 +36,29 @@ function JoinGamePhaseComponent({socket, gameState}) {
             setNameInputValue("");
           }
         }>
-          Submit
+          Create player
         </button>
       </div>
       :
-      <h2>{JSON.stringify(gameState.allPlayers.map(player => player.name))}</h2>
+      <div className="row flex-column">
+        <h1 className="m-5">Players</h1>
+        {
+          gameState.allPlayers.filter(
+            player => player.name.length > 0
+          ).map(
+            (player, index) => 
+            <div 
+              className="border p-3 mb-1"
+              style={{ width: '80vw' }}
+            >
+              {player.name}
+            </div>
+          )
+        }
+      </div>
     }
     </>
   ); 
-  return <h2>{JSON.stringify(gameState)}</h2>
 }
 
 
