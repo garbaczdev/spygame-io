@@ -1,9 +1,10 @@
 
 class Player {
-  constructor(deviceId, sockets, name) {
+  constructor(deviceId, sockets, name, isHost=false) {
     this.deviceId = deviceId;
     this.sockets = sockets;
     this.name = name;
+    this.isHost = isHost;
   }
 }
 
@@ -13,40 +14,62 @@ class GamePhase {
     this.gameRoom = gameRoom;
   }
 
-  getState(deviceId) {}
-  action(socket, deviceId, data) {}
+  getState(player) {
+    return {
+      allPlayers: this.gameRoom.players.map(otherPlayer => {
+        return {
+          "name": otherPlayer.name,
+          "isHost": otherPlayer.isHost,
+          "isComplete": otherPlayer.name != "",
+          "isCurrentPlayer": otherPlayer === player,
+        }  
+      }),
+      player: {
+        "name": player.name,
+        "isHost": player.isHost,
+        "isComplete": player.name != ""
+      },
+      phase: this.getPhaseState(player),
+    }
+  }
+
+  getPhaseState(player) {}
+
+  action(player, data) {
+    player.sockets.forEach(socket => {
+      this.gameRoom.killSocket(socket, `state ${data} not recognized.`);
+    })
+  }
 
   addNewPlayer(socket, deviceId) {
-    socket.emit('gameState', {finished: true});
-    socket.disconnect(true);
+    this.gameRoom.killSocket(socket, "Can not add players in the current game phase")
   }
 }
 
 class GameJoinPhase extends GamePhase {
-
-  getState(deviceId) {
-    // const playerWithDeviceId = this.gameRoom.players.find(
-    //   player => player.deviceId === deviceId
-    // );
-
-    // return {
-    //   name: "join",
-    //   player: {
-    //     created: !!playerWithDeviceId,
-    //     name: !!playerWithDeviceId ? playerWithDeviceId.name : "",
-    //     isHost: deviceId === this.gameRoom.hostDeviceId
-    //   }
-    // }
+  getPhaseState(player) {
+    return {
+      name: "join",
+      state: {
+        nameRequired: player.name === ""
+      }
+    }
   }
 
-  action(socket, deviceId, data) {
-    
+  action(player, data) {
+    console.log(player, data);
+    if (data.phase === "join") {
+
+    } else {
+      super.action(player, data);
+    }
   }
 
   addNewPlayer(socket, deviceId) {
     if (this.gameRoom.players.find(player => player.deviceId === deviceId)) return;
-    const newPlayer = new Player(deviceId, [socket], "");
+    const newPlayer = new Player(deviceId, [socket], "", deviceId === this.gameRoom.hostDeviceId);
     this.gameRoom.players.push(newPlayer);
+    this.gameRoom.updateAllPlayers()
   }
 }
 
@@ -58,7 +81,7 @@ class GameRoom {
 
     this.creationTime = Date.now();
 
-    this.gamePhase = new GameJoinPhase();
+    this.gamePhase = new GameJoinPhase(this);
     this.players = [];
   }
 
@@ -73,7 +96,17 @@ class GameRoom {
       this.gamePhase.addNewPlayer(socket, deviceId);
     }
 
-    socket.emit('gameState', this.gamePhase.getState(deviceId));
+    const player = this.players.find(player => player.deviceId === deviceId);
+
+    socket.on('action', data => {
+      if (!data.phase) {
+        this.killSocket(socket, `action data validation error`);
+      } else {
+        this.gamePhase.action(data);
+      }
+    })
+
+    socket.emit('gameState', this.gamePhase.getState(player));
   }
 
   removeSocket(socket, deviceId) {
@@ -84,6 +117,24 @@ class GameRoom {
         s => s != socket
       );
     }
+
+    if (playerWithDeviceId.name === "" && playerWithDeviceId.sockets.length === 0) {
+      this.players = this.players.filter(player => player != playerWithDeviceId);
+      updateAllPlayers();
+    }
+  }
+
+  updateAllPlayers() {
+    this.players.forEach(player => {
+      player.sockets.forEach(socket => {
+        socket.emit('gameState', this.gamePhase.getState(player));
+      }) 
+    });
+  }
+
+  killSocket(socket, message) {
+    socket.emit('gameState', {finished: true, message});
+    socket.disconnect(true);
   }
 }
 
