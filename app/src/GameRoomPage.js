@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import Cookies from 'js-cookie';
 import io from 'socket.io-client';
+
+
+function JoinGamePhaseComponent({socket, gameState}) {
+
+  return <h2>{JSON.stringify(gameState)}</h2>
+}
+
+
+function GamePhaseComponent({socket, gameState}) {
+  const decideGamePhaseComponent = (gamePhase) => {
+    if (gamePhase === "join") return <JoinGamePhaseComponent socket={socket} gameState={gameState} />;
+  }
+  return decideGamePhaseComponent(gameState.phase.name);
+}
 
 
 function GameRoomPage() {
@@ -10,17 +23,11 @@ function GameRoomPage() {
   const { gameRoomId } = useParams();
   const navigate = useNavigate();
   const [socket, setSocket] = useState(null);
-
-  const updateGameState = (gameState) => {
-    if (gameState.finished) {
-      console.log(gameState);
-      navigate('/');
-    } 
-  }
+  const [gameState, setGameState] = useState({});
 
   useEffect(() => {
     // Open a new socket connection
-    const newSocket = io(window.location.origin, {
+    const socket = io(window.location.origin, {
       autoConnect: true,
       reconnectionAttempts: 5, // Attempt to reconnect 5 times
       reconnectionDelay: 1000,  // Wait 1 second between reconnection attempts
@@ -29,51 +36,39 @@ function GameRoomPage() {
       }
     });
 
-    newSocket.on('gameState', gameState => {
-      updateGameState(gameState);
+    socket.on('gameState', newGameState => {
+      console.log(newGameState);
+      if (newGameState.finished) {
+        navigate('/');
+        return;
+      } 
+      
+      setGameState(newGameState)
     });
 
-    setSocket(newSocket);
+    setSocket(socket);
 
     // Cleanup function to close the socket connection
     return () => {
-      if (newSocket) {
-        newSocket.disconnect();
+      if (socket) {
+        socket.off('connect');
+        socket.off('disconnect');
+        socket.disconnect();
       }
     };
-  }, [navigate]);
+  }, [navigate, gameRoomId]);
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.on('connect', () => {
-      console.log('Connected to socket');
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Disconnected from socket');
-    });
-
-    socket.on('noGameRoom', () => {
-      console.log('Bad game room!');
-      navigate('/');
-    });
-
-    socket.on('gameState', (gameState) => {
-      console.log(gameState);
-    });
-
-    // Add other socket event listeners here
-
-    return () => {
-      // Clean up all event listeners here
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('noGameRoom');
-      // Remove other socket event listeners here
-    };
-  }, [socket]);
-
-  return <h2>Game Page</h2>;
+  return (
+    <>
+    {
+      socket && Object.entries(gameState).length > 0
+      ?
+      <GamePhaseComponent socket={socket} gameState={gameState} />
+      :
+      <></>
+    }
+    </>
+  );
 }
 
 export default GameRoomPage;
