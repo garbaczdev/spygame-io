@@ -11,6 +11,13 @@ function GameRoomPage() {
   const navigate = useNavigate();
   const [socket, setSocket] = useState(null);
 
+  const updateGameState = (gameState) => {
+    if (gameState.finished) {
+      console.log(gameState);
+      navigate('/');
+    } 
+  }
+
   useEffect(() => {
     // Open a new socket connection
     const newSocket = io(window.location.origin, {
@@ -22,9 +29,8 @@ function GameRoomPage() {
       }
     });
 
-    newSocket.on('noGameRoom', () => {
-      console.log('Bad game room!');
-      navigate('/');
+    newSocket.on('gameState', gameState => {
+      updateGameState(gameState);
     });
 
     setSocket(newSocket);

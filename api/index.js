@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const http = require('http');
 const socketIo = require('socket.io');
 
-const GameRoom = require('./GameRoom.js');
+const { GameRoom, GameRoomUtils } = require('./GameRoom.js');
 
 const app = express();
 app.use(cookieParser());
@@ -62,23 +62,22 @@ io.on('connection', (socket) => {
   const deviceId = cookies.deviceId;
 
   if (!deviceId) {
-    console.log("No deviceId - disconnecting...");
-    socket.disconnect(true);
+    GameRoomUtils.killSocket(socket, "No deviceId on the socket");
+    return;
   }
 
   const gameRoomId = socket.handshake.query.gameRoomId;
   if (!gameRoomId) {
-    console.log("No gameRoomId - disconnecting...");
-    socket.disconnect(true);
+    GameRoomUtils.killSocket(socket, "gameRoomId not provided");
+    return;
   }
 
-  if (gameRoomId in gameRooms) {
-    gameRooms[gameRoomId].addSocket(socket, deviceId);
-  } else {
-    console.log("No such gameroom - disconnecting...");
-    socket.emit('gameState', {finished: true});
-    socket.disconnect(true);
+  if (!(gameRoomId in gameRooms)) {
+    GameRoomUtils.killSocket(socket, "No such gameroom with that ID!");
+    return;
   }
+
+  gameRooms[gameRoomId].addSocket(socket, deviceId);
 
   socket.on('disconnect', () => {
     const gameRoom = gameRooms[gameRoomId];

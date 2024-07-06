@@ -1,4 +1,12 @@
 
+class GameRoomUtils {
+  static killSocket(socket, message="") {
+    socket.emit('gameState', {finished: true, message});
+    socket.disconnect(true);
+  }
+}
+
+
 class Player {
   constructor(deviceId, sockets, name, isHost=false) {
     this.deviceId = deviceId;
@@ -37,12 +45,12 @@ class GamePhase {
 
   action(player, data) {
     player.sockets.forEach(socket => {
-      this.gameRoom.killSocket(socket, `state ${data} not recognized.`);
+      GameRoomUtils.killSocket(socket, `state ${data} not recognized.`);
     })
   }
 
   addNewPlayer(socket, deviceId) {
-    this.gameRoom.killSocket(socket, "Can not add players in the current game phase")
+    GameRoomUtils.killSocket(socket, "Can not add players in the current game phase")
   }
 }
 
@@ -100,7 +108,7 @@ class GameRoom {
 
     socket.on('action', data => {
       if (!data.phase) {
-        this.killSocket(socket, `action data validation error`);
+        GameRoomUtils.killSocket(socket, `action data validation error`);
       } else {
         this.gamePhase.action(data);
       }
@@ -120,7 +128,7 @@ class GameRoom {
 
     if (playerWithDeviceId.name === "" && playerWithDeviceId.sockets.length === 0) {
       this.players = this.players.filter(player => player != playerWithDeviceId);
-      updateAllPlayers();
+      this.updateAllPlayers();
     }
   }
 
@@ -131,11 +139,6 @@ class GameRoom {
       }) 
     });
   }
-
-  killSocket(socket, message) {
-    socket.emit('gameState', {finished: true, message});
-    socket.disconnect(true);
-  }
 }
 
-module.exports = GameRoom;
+module.exports = { GameRoomUtils, GameRoom };
