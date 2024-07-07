@@ -13,6 +13,18 @@ function JoinGamePhaseComponent({socket, gameState}) {
     player => player.name.length > 0
   ).length >= 4;
 
+  const [canCreateUser, reason] = (() => {
+    const name = nameInputValue;
+    if (name.trim().length === 0) return [false, ""];
+    if (name.trim().length > 20) return [false, "Name too long"];
+    if (
+      gameState.allPlayers.map(
+        player => player.name.toLowerCase()
+      ).includes(name.toLowerCase())
+    ) return [false, "This name is taken by another player"];
+    return [true, ""];
+  })();
+
   return (
     <>
     {
@@ -20,6 +32,13 @@ function JoinGamePhaseComponent({socket, gameState}) {
       ?
       <div className="container text-center">
         <h1 className="m-5">New Player</h1>
+        {
+          canCreateUser
+          ?
+          <></>
+          :
+          <label style={{ color: 'red', marginBottom: "10px" }}>{reason}</label>
+        }
         <input 
           type="text" 
           className="form-control mb-3"
@@ -28,10 +47,10 @@ function JoinGamePhaseComponent({socket, gameState}) {
           onChange={(event) => setNameInputValue(event.target.value)}
         />
         <button 
-          className="btn btn-primary btn-lg"
+          className={`btn btn-lg ${canCreateUser ? "btn-primary" : "btn-secondary"}`}
           onClick={
           () => {
-            if (nameInputValue.length === 0) return;
+            if (!canCreateUser) return;
             socket.emit("action", {
               phase: "join",
               type: "provideName",
@@ -39,7 +58,6 @@ function JoinGamePhaseComponent({socket, gameState}) {
                 name: nameInputValue
               }
             });
-            setNameInputValue("");
           }
         }>
           Create player
