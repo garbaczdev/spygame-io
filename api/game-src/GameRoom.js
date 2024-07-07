@@ -97,9 +97,11 @@ class GameRoom {
     return false;
   }
 
-  cleanRoom() {
-    this.logger.info("Cleaning game room");
-    this.players.forEach(player => player.kill);
+  killRoom() {
+    this.logger.info("Kill game room");
+    this.players.forEach(player => player.kill("Game room closed!"));
+    this.players = [];
+    this.hostDeviceId = "";
   }
 }
 

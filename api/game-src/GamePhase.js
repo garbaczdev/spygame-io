@@ -27,6 +27,11 @@ class GamePhase {
   getPhaseState(player) {}
 
   action(player, actionData) {
+    if (actionData.phase === "all" && actionData.type == "leaveRoom") {
+      if (player.isHost) this.gameRoom.killRoom();
+      else player.kill("");
+      return;
+    }
     player.sockets.forEach(socket => {
       GameRoomUtils.killSocket(socket, `state ${JSON.stringify(actionData)} not recognized.`);
     })

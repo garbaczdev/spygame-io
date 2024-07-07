@@ -32,7 +32,8 @@ app.get('/api/device-id', (req, res) => {
       httpOnly: false,
       sameSite: 'Lax',
       path: '/'
-    });
+    }
+  );
   res.send(deviceId);
 });
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { Navbar, Button, Collapse } from 'react-bootstrap';
 import io from 'socket.io-client';
 
 
 function JoinGamePhaseComponent({socket, gameState}) {
-
   const [nameInputValue, setNameInputValue] = useState("");
 
   return (
@@ -82,6 +82,7 @@ function GameRoomPage() {
   const navigate = useNavigate();
   const [socket, setSocket] = useState(null);
   const [gameState, setGameState] = useState({});
+  const [menuOpened, setMenuOpened] = useState(false);
 
   useEffect(() => {
     // Open a new socket connection
@@ -121,7 +122,58 @@ function GameRoomPage() {
     {
       socket && Object.entries(gameState).length > 0
       ?
-      <GamePhaseComponent socket={socket} gameState={gameState} />
+      <>
+        <Navbar
+          bg="light"
+          expand="lg"
+          style={{
+            position: 'fixed',
+            top: "10px",
+            right: "10px",
+            zIndex: 1000,
+           fontSize: '10rem'
+          }}
+        >
+          <Button
+            variant="outline-secondary"
+            onClick={() => setMenuOpened(!menuOpened)}
+            aria-controls="example-collapse-text"
+            aria-expanded={menuOpened}
+          >
+            &#9776; {/* Hamburger Icon */}
+          </Button>
+        </Navbar>
+        <div 
+          style={{
+            position: 'fixed',
+            top: menuOpened ? "0" : "-120%",
+            left: 0,
+            width: '100%',
+            height: "100vh",
+            backgroundColor: 'white',
+            zIndex: 100,
+            overflow: 'hidden',
+            transition: "top 0.3s ease-in-out",
+          }}
+        >
+          <div className="container text-center d-flex justify-content-center align-items-center vh-100">
+            <div>
+              <button 
+                className="btn btn-lg btn-danger"
+                onClick={
+                () => {
+                  socket.emit("action", {
+                    phase: "all",
+                    type: "leaveRoom",
+                    data: {}
+                  });
+                }
+              }> Leave Game </button>
+            </div>
+          </div>
+        </div>
+        <GamePhaseComponent socket={socket} gameState={gameState} />
+      </>
       :
       <></>
     }

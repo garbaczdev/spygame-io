@@ -40,7 +40,7 @@ class GameRoomManager {
       const gameRoom = this.gameRooms[gameRoomId];
       if (gameRoom) gameRoom.removeSocket(socket, deviceId);
       if (gameRoom.canBeDeleted()) {
-        gameRoom.cleanRoom();
+        gameRoom.killRoom();
         delete this.gameRooms[gameRoomId];
       }
     });
@@ -54,7 +54,7 @@ class GameRoomManager {
       }
     }
     for (const gameRoomId of gameRoomsToDelete) {
-      this.gameRooms[gameRoomId].cleanRoom();
+      this.gameRooms[gameRoomId].killRoom();
       delete this.gameRooms[gameRoomId];
     }
   }

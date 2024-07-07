@@ -27,7 +27,7 @@ function App() {
       {
         deviceId
         ?
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center vh-100 ">
           <Router>
             <Routes>
               <Route exact path="/" element={<HomePage />} />
