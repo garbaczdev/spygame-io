@@ -1,5 +1,6 @@
 const { GamePhase, GamePhaseJoin } = require('./GamePhase.js');
 const { GameRoomUtils } = require('./GameRoomUtils.js');
+const { Player } = require('./Player.js');
 
 const winston = require('winston');
 
@@ -13,6 +14,10 @@ class GameRoom {
 
     this.gamePhase = new GamePhaseJoin(this);
     this.players = [];
+    
+    if (process.env.INSERT_MOCK_PLAYERS === '1') {
+      for (let i = 1; i <= 6; i++) this.players.push(new Player(String(i), [], `Player ${i}`, false))
+    }
 
     this.logger = winston.createLogger({
       level: 'debug',
