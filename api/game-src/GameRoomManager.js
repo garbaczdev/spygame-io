@@ -8,6 +8,7 @@ class GameRoomManager {
 
   constructor() {
     this.gameRooms = {};
+    const cleanupIntervalId = setInterval(() => this.cleanupRooms(), 5000);
   }
 
   createRoom(hostDeviceId) {
@@ -38,13 +39,24 @@ class GameRoomManager {
     socket.on('disconnect', () => {
       const gameRoom = this.gameRooms[gameRoomId];
       if (gameRoom) gameRoom.removeSocket(socket, deviceId);
-      if (gameRoom.canBeDeleted()) delete this.gameRooms[gameRoomId];
-      console.log(Object.keys(this.gameRooms));
+      if (gameRoom.canBeDeleted()) {
+        gameRoom.cleanRoom();
+        delete this.gameRooms[gameRoomId];
+      }
     });
   }
   
   cleanupRooms() {
-
+    const gameRoomsToDelete = [];
+    for (const gameRoomId of Object.keys(this.gameRooms)) {
+      if (this.gameRooms[gameRoomId].canBeDeleted()) {
+        gameRoomsToDelete.push(gameRoomId);
+      }
+    }
+    for (const gameRoomId of gameRoomsToDelete) {
+      this.gameRooms[gameRoomId].cleanRoom();
+      delete this.gameRooms[gameRoomId];
+    }
   }
 }
 

@@ -1,2 +1,0 @@
-1. Add logging
-2. Remove empty games
