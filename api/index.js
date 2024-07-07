@@ -5,9 +5,9 @@ const cookieParser = require('cookie-parser');
 const http = require('http');
 const socketIo = require('socket.io');
 
-const { GameRoomManager } = require('./game-src/GameRoomManager.js');
-const { GameRoom } = require('./game-src/GameRoom.js');
-const { GameRoomUtils } = require('./game-src/GameRoomUtils.js');
+const { GameRoomManager } = require('./game/GameRoomManager.js');
+const { GameRoom } = require('./game/GameRoom.js');
+const { GameRoomUtils } = require('./game/GameRoomUtils.js');
 
 const app = express();
 app.use(cookieParser());

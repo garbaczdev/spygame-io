@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-function HomePage() {
+export function HomePage() {
 
   const navigate = useNavigate();
 
@@ -21,5 +21,3 @@ function HomePage() {
     </div>
   );
 }
-
-export default HomePage;

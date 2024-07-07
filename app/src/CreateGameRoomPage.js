@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-function CreateGameRoomPage() {
+export function CreateGameRoomPage() {
 
   const navigate = useNavigate();
 
@@ -15,5 +15,3 @@ function CreateGameRoomPage() {
   // This can be a waiting queue in the future
   return <></>;
 }
-
-export default CreateGameRoomPage;

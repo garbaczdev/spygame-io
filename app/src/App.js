@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 
-import HomePage from './HomePage.js';
-import GameRoomPage from './GameRoomPage.js';
-import CreateGameRoomPage from './CreateGameRoomPage.js';
-import NotFoundPage from './NotFoundPage.js';
+import { HomePage } from './HomePage.js';
+import { GameRoomPage } from './GameRoomPage.js';
+import { CreateGameRoomPage } from './CreateGameRoomPage.js';
+import { NotFoundPage } from './NotFoundPage.js';
 
 
-function App() {
+export function App() {
   const [deviceId, setDeviceId] = useState(Cookies.get("deviceId"));
 
   useEffect(() => {
@@ -43,5 +43,3 @@ function App() {
     </>
   );
 }
-
-export default App;

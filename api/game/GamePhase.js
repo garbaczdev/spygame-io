@@ -39,6 +39,7 @@ class GamePhase {
   }
 }
 
+
 class GamePhaseJoin extends GamePhase {
   getPhaseState(player) {
     return {
