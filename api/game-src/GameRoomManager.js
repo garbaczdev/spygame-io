@@ -22,7 +22,9 @@ class GameRoomManager {
       gameRoomId = Array(6).fill(0).map(i => crypto.randomInt(0, 9).toString()).join("")
     } while (gameRoomId in this.gameRooms);
 
-    this.gameRooms[gameRoomId] = new GameRoom(gameRoomId, hostDeviceId);
+    this.gameRooms[gameRoomId] = new GameRoom(gameRoomId, hostDeviceId, () => {
+      this.deleteRoom(gameRoomId);
+    });
     
     return gameRoomId;
   }
@@ -40,8 +42,7 @@ class GameRoomManager {
       const gameRoom = this.gameRooms[gameRoomId];
       if (gameRoom) gameRoom.removeSocket(socket, deviceId);
       if (gameRoom.canBeDeleted()) {
-        gameRoom.killRoom();
-        delete this.gameRooms[gameRoomId];
+        this.deleteRoom(gameRoomId);
       }
     });
   }
@@ -54,9 +55,13 @@ class GameRoomManager {
       }
     }
     for (const gameRoomId of gameRoomsToDelete) {
-      this.gameRooms[gameRoomId].killRoom();
-      delete this.gameRooms[gameRoomId];
+      this.deleteRoom(gameRoomId);
     }
+  }
+
+  deleteRoom(gameRoomId) {
+    this.gameRooms[gameRoomId].kill();
+    delete this.gameRooms[gameRoomId];
   }
 }
 

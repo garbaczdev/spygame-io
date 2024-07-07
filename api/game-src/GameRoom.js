@@ -6,9 +6,10 @@ const winston = require('winston');
 
 
 class GameRoom {
-  constructor(id, hostDeviceId) {
+  constructor(id, hostDeviceId, killMePleaseCallback=()=>{}) {
     this.id = id;
     this.hostDeviceId = hostDeviceId;
+    this.killMePleaseCallback = killMePleaseCallback;
 
     this.creationTime = Date.now();
 
@@ -102,11 +103,11 @@ class GameRoom {
     return false;
   }
 
-  killRoom() {
-    this.logger.info("Kill game room");
+  kill() {
     this.players.forEach(player => player.kill("Game room closed!"));
     this.players = [];
     this.hostDeviceId = "";
+    this.logger.info("Killed game room");
   }
 }
 

@@ -28,13 +28,10 @@ class GamePhase {
 
   action(player, actionData) {
     if (actionData.phase === "all" && actionData.type == "leaveRoom") {
-      if (player.isHost) this.gameRoom.killRoom();
-      else player.kill("");
+      if (player.isHost) this.gameRoom.killMePleaseCallback();
+      else player.kill("Game room left");
       return;
     }
-    player.sockets.forEach(socket => {
-      GameRoomUtils.killSocket(socket, `state ${JSON.stringify(actionData)} not recognized.`);
-    })
   }
 
   addNewPlayer(socket, deviceId) {
