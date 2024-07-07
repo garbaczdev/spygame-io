@@ -1,10 +1,3 @@
-
-1. LeaveGame button (In navbar)
-2. Change cleanRoom to killRoom
-3. Add modal on gameroom disconnect.
-4. When host leaves, kill game room
 5. Add proceed to settings page for host
-6. Add QR code or copy code or join code
-7. Add join game on Homescreen
 8. Add name validation in join screen
 9. Comment things...

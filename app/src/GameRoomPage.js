@@ -9,6 +9,10 @@ import QRCode from 'qrcode.react';
 function JoinGamePhaseComponent({socket, gameState}) {
   const [nameInputValue, setNameInputValue] = useState("");
 
+  const canStart = gameState.allPlayers.filter(
+    player => player.name.length > 0
+  ).length >= 4;
+
   return (
     <>
     {
@@ -72,6 +76,31 @@ function JoinGamePhaseComponent({socket, gameState}) {
               }
             </div>
           )
+        }
+        {
+          gameState.player.isHost
+          ?
+          <button 
+            className={`btn btn-lg ${canStart ? "btn-primary" : "btn-secondary"}`}
+            style={{
+              position: 'fixed',
+              bottom: "10px",
+              left: "0",
+              zIndex: 50,
+              overflow: 'hidden',
+            }}
+            onClick={
+            () => {
+              if (!canStart) return;
+              socket.emit("action", {
+                phase: "join",
+                type: "startGame",
+                data: {}
+              });
+            }
+          }> Start Game </button>
+          :
+          <></>
         }
       </div>
     }
