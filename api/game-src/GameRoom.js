@@ -1,6 +1,8 @@
 const { GamePhase, GamePhaseJoin } = require('./GamePhase.js');
 const { GameRoomUtils } = require('./GameRoomUtils.js');
 
+const winston = require('winston');
+
 
 class GameRoom {
   constructor(id, hostDeviceId) {
@@ -11,6 +13,32 @@ class GameRoom {
 
     this.gamePhase = new GamePhaseJoin(this);
     this.players = [];
+
+    this.logger = winston.createLogger({
+      level: 'debug',
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.timestamp(),
+            winston.format.printf(({ timestamp, level, message }) => {
+              return `[${timestamp}][${this.id}][${level}] ${message}`;
+            })
+          ),
+        }),
+        new winston.transports.File({
+          filename: 'app.log',
+          format:  winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.printf(({ timestamp, level, message }) => 
+              JSON.stringify({ id: this.id, timestamp, level, message })
+            )
+          ),
+        }),
+      ],
+    });
+    
+    this.logger.info(`New GameRoom "${id}"`)
   }
 
   addSocket(socket, deviceId) {
@@ -67,6 +95,11 @@ class GameRoom {
     ) return true;
     
     return false;
+  }
+
+  cleanRoom() {
+    this.logger.info("Cleaning game room");
+    this.players.forEach(player => player.kill);
   }
 }
 

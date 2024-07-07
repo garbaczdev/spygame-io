@@ -48,7 +48,7 @@ class GamePhaseJoin extends GamePhase {
   }
 
   action(player, actionData) {
-    console.log(player.deviceId, actionData);
+    this.gameRoom.logger.debug(`${player.name.length > 0 ? player.name : player.deviceId} - ${JSON.stringify(actionData)}`);
     if (actionData.phase === "join" && actionData.type == "provideName") {
       let name = actionData.data.name;
       if (!name) {
@@ -62,6 +62,7 @@ class GamePhaseJoin extends GamePhase {
       if (allNames.includes(name.toLowerCase())) return;
       
       player.name = name;
+      this.gameRoom.logger.info(`New player: "${name}"`)
       this.gameRoom.updateAllPlayers();
       return;
     }
@@ -73,6 +74,7 @@ class GamePhaseJoin extends GamePhase {
     if (this.gameRoom.players.find(player => player.deviceId === deviceId)) return;
     const newPlayer = new Player(deviceId, [socket], "", deviceId === this.gameRoom.hostDeviceId);
     this.gameRoom.players.push(newPlayer);
+    this.gameRoom.logger.debug(`New device connected: "${deviceId}"`)
     this.gameRoom.updateAllPlayers()
   }
 }
