@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { Navbar, Button, Collapse } from 'react-bootstrap';
 import io from 'socket.io-client';
+import QRCode from 'qrcode.react';
 
 
 function JoinGamePhaseComponent({socket, gameState}) {
@@ -42,6 +43,17 @@ function JoinGamePhaseComponent({socket, gameState}) {
       </div>
       :
       <div className="row flex-column">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <QRCode value={window.location.href} size={256} />
+        </div>
+        <button 
+          className="btn btn-primary btn-lg mt-5"
+          style={{ width: 'auto' }} 
+          onClick={
+          () => navigator.clipboard.writeText(window.location.href)
+        }>
+          Copy Link
+        </button>
         <h1 className="m-5">Players</h1>
         {
           gameState.allPlayers.filter(
