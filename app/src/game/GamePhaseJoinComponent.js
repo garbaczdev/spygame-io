@@ -3,7 +3,7 @@ import { useState } from 'react';
 import QRCode from 'qrcode.react';
 
 
-export function JoinGamePhaseComponent({socket, gameState}) {
+export function GamePhaseJoinComponent({socket, gameState}) {
   const [nameInputValue, setNameInputValue] = useState("");
 
   const canStart = gameState.allPlayers.filter(

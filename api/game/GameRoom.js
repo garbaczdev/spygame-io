@@ -1,4 +1,4 @@
-const { GamePhase, GamePhaseJoin } = require('./GamePhase.js');
+const { GamePhaseJoin } = require('./GamePhaseJoin.js');
 const { GameRoomUtils } = require('./GameRoomUtils.js');
 const { Player } = require('./Player.js');
 
@@ -61,6 +61,7 @@ class GameRoom {
     const player = this.players.find(player => player.deviceId === deviceId);
 
     socket.on('action', actionData => {
+      this.logger.debug(`${player.name.length > 0 ? player.name : player.deviceId} - ${JSON.stringify(actionData)}`);
       if (!actionData.phase) {
         GameRoomUtils.killSocket(socket, `action data validation error`);
       } else {
