@@ -18,12 +18,12 @@ class GamePhaseSettings extends GamePhase {
 
   action(player, actionData) {
 
-    if (actionData.phase === "settings" && actionData.type == "changeSettings") {
+    if (actionData.phase === "settings" && actionData.type == "confirmSettings") {
       if (!player.isHost) return;
       
-      const newSettings = actionData["settings"];
-      if (typeof newSettings === 'object') return;
-      if (!areSettingsValid(newSettings)) return;
+      const newSettings = actionData.data.settings;
+      if (!(typeof newSettings === 'object') || newSettings === undefined) return;
+      if (!this.areSettingsValid(newSettings)) return;
       
       this.settings = {
         spiesNumber: newSettings["spiesNumber"],
@@ -32,18 +32,13 @@ class GamePhaseSettings extends GamePhase {
 
       this.gameRoom.logger.info(`Settings changed to ${JSON.stringify(this.settings)}`);
 
-      return;
-    }
-
-    if (actionData.phase === "settings" && actionData.type == "confirmSettings") {
-      if (!player.isHost) return;
-
       this.gameRoom.gamePhase = new GamePhaseRoles(this.gameRoom, this.settings);
       this.gameRoom.updateAllPlayers();
       this.gameRoom.logger.info(`Game proceeded to roles phase`);
 
       return;
     }
+
     super.action(player, actionData);
   }
 
@@ -58,7 +53,7 @@ class GamePhaseSettings extends GamePhase {
     if (!Number.isInteger(settings["spiesNumber"])) return false;
     if (!Number.isInteger(settings["discussionSeconds"])) return false;
     if (settings["spiesNumber"] <= 0) return false;
-    if (settings["spiesNumber"] > this.gameRoom.players.length) return false;
+    if (settings["spiesNumber"] > Math.floor(this.gameRoom.players.length/2)) return false;
     if (settings["discussionSeconds"] <= 0) return false;
     if (settings["discussionSeconds"] > 3600) return false;
     
