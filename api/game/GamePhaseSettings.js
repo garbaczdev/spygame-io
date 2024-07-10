@@ -27,7 +27,7 @@ class GamePhaseSettings extends GamePhase {
       
       this.settings = {
         spiesNumber: newSettings["spiesNumber"],
-        discussionSeconds: newSettings["discussionSeconds"],
+        discussionMinutes: newSettings["discussionMinutes"],
       }
 
       this.gameRoom.logger.info(`Settings changed to ${JSON.stringify(this.settings)}`);
@@ -45,17 +45,17 @@ class GamePhaseSettings extends GamePhase {
   calculateDefaultSettings() {
     return {
       spiesNumber: Math.floor(this.gameRoom.players.length / 3),
-      discussionSeconds: 300,
+      discussionMinutes: 5,
     };
   }
 
   areSettingsValid(settings) {
     if (!Number.isInteger(settings["spiesNumber"])) return false;
-    if (!Number.isInteger(settings["discussionSeconds"])) return false;
+    if (!Number.isInteger(settings["discussionMinutes"])) return false;
     if (settings["spiesNumber"] <= 0) return false;
-    if (settings["spiesNumber"] > Math.floor(this.gameRoom.players.length/2)) return false;
-    if (settings["discussionSeconds"] <= 0) return false;
-    if (settings["discussionSeconds"] > 3600) return false;
+    if (settings["spiesNumber"] > Math.ceil(this.gameRoom.players.length/2) - 1) return false;
+    if (settings["discussionMinutes"] <= 0) return false;
+    if (settings["discussionMinutes"] > 60) return false;
     
     return true;
   }

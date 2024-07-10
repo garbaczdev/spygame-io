@@ -3,56 +3,71 @@ import { useState, useEffect } from 'react';
 
 export function GamePhaseSettingsComponent({socket, gameState}) {
 
-  const [settings, setSettings] = useState(gameState.phase.state.settings);
-
   const [spiesNumber, setSpiesNumber] = useState(gameState.phase.state.settings.spiesNumber);
-  const [discussionSeconds, setDiscussionSeconds] = useState(gameState.phase.state.settings.discussionSeconds);
+  const [discussionMinutes, setDiscussionMinutes] = useState(gameState.phase.state.settings.discussionMinutes);
 
-  useEffect(() => {
-    const newSettings = gameState.phase.state.settings;
-    if (
-      newSettings["spiesNumber"] != settings["spiesNumber"]
-      || newSettings["discussionSeconds"] != settings["discussionSeconds"]
-    ) {
-      setSettings(newSettings);
-      setSpiesNumber(newSettings["spiesNumber"]);
-      setDiscussionSeconds(newSettings["discussionSeconds"]);
-    }
-  }, [gameState]);
+  const canDecreaseSpies = spiesNumber > 1;
+  const canDecreaseMinutes = discussionMinutes > 1;
+
+  const canIncreaseSpies = spiesNumber < Math.ceil(gameState.allPlayers.length/2) - 1;
+  const canIncreaseMinutes = discussionMinutes < 60;
 
   return (
     <>
-      <h2>Settings</h2>
-      <input 
-        type="text" 
-        className="form-control mb-3"
-        value={spiesNumber} 
-        onChange={(event) => setSpiesNumber(event.target.value)}
-      />
-      <input 
-        type="text" 
-        className="form-control mb-3"
-        value={discussionSeconds} 
-        onChange={(event) => setDiscussionSeconds(event.target.value)}
-      />
-      <button 
-        className={`btn btn-lg "btn-primary"`}
-        onClick={
-        () => {
-          socket.emit("action", {
-            phase: "settings",
-            type: "confirmSettings",
-            data: {
-              settings: {
-                spiesNumber,
-                discussionSeconds
+      <div className="container text-center">
+        <h2 className="mb-2">Settings</h2>
+        <h4 className="mb-5">Total players: {gameState.allPlayers.length}</h4>
+        <h4>Spies number</h4>
+        <div className="d-flex justify-content-center align-items-center mb-4 mt-2">
+          <button
+            className={`btn mx-2 ${canDecreaseSpies ? "btn-primary" : "btn-secondary"}`}
+            onClick={() => {
+              if (canDecreaseSpies) setSpiesNumber(spiesNumber - 1);
+            }}
+          >-</button>
+          <span className="mx-2">{spiesNumber}</span>
+          <button
+            className={`btn mx-2 ${canIncreaseSpies ? "btn-primary" : "btn-secondary"}`}
+            onClick={() => {
+              if (canIncreaseSpies) setSpiesNumber(spiesNumber + 1);
+            }}
+          >+</button>
+        </div>
+        <h4>Minutes for discussion</h4>
+        <div className="d-flex justify-content-center align-items-center mb-4 mt-2">
+          <button
+            className={`btn mx-2 ${canDecreaseMinutes ? "btn-primary" : "btn-secondary"}`}
+            onClick={() => {
+              if (canDecreaseMinutes) setDiscussionMinutes(discussionMinutes - 1);
+            }}
+          >-</button>
+          <span className="mx-2">{discussionMinutes}</span>
+          <button
+            className={`btn mx-2 ${canIncreaseMinutes ? "btn-primary" : "btn-secondary"}`}
+            onClick={() => {
+              if (canIncreaseMinutes) setDiscussionMinutes(discussionMinutes + 1);
+            }}
+          >+</button>
+        </div>
+        <button 
+          className="btn btn-lg btn-primary mt-4"
+          onClick={
+          () => {
+            socket.emit("action", {
+              phase: "settings",
+              type: "confirmSettings",
+              data: {
+                settings: {
+                  spiesNumber,
+                  discussionMinutes
+                }
               }
-            }
-          });
-        }
-      }>
-        Create player
-      </button>
+            });
+          }
+        }>
+          Start Game
+        </button>
+      </div>
     </>
   );
 }
