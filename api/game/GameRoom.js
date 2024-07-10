@@ -89,9 +89,7 @@ class GameRoom {
 
   updateAllPlayers() {
     this.players.forEach(player => {
-      player.sockets.forEach(socket => {
-        socket.emit('gameState', this.gamePhase.getState(player));
-      }) 
+      player.updateGameState(this.gamePhase.getState(player))
     });
   }
 
@@ -110,6 +108,12 @@ class GameRoom {
     this.hostDeviceId = "";
     this.logger.info("Killed game room");
   }
+
+  kickPlayer(player) {
+    player.kill();
+    this.players = this.players.filter(otherPlayer => otherPlayer != player);
+  }
 }
+
 
 module.exports = { GameRoom };

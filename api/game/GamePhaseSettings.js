@@ -2,15 +2,60 @@ const { GamePhase } = require('./GamePhase.js');
 
 
 class GamePhaseSettings extends GamePhase {
+
+  constructor(gameRoom) {
+    super(gameRoom);
+    this.settings = this.calculateDefaultSettings();
+  }
+
   getPhaseState(player) {
     return {
       name: "settings",
-      state: {}
+      state: player.isHost ? {settings: this.settings} : {}
     }
   }
 
   action(player, actionData) {
+
+    if (actionData.phase === "settings" && actionData.type == "changeSettings") {
+      if (!player.isHost) return;
+      
+      const newSettings = actionData["settings"];
+      if (typeof newSettings === 'object') return;
+      if (!areSettingsValid(newSettings)) return;
+      
+      this.settings = {
+        spiesNumber: newSettings["spiesNumber"],
+        discussionSeconds: newSettings["discussionSeconds"],
+      }
+
+      return;
+    }
+
+    if (actionData.phase === "settings" && actionData.type == "confirmSettings") {
+      if (!player.isHost) return;
+
+      return;
+    }
     super.action(player, actionData);
+  }
+
+  calculateDefaultSettings() {
+    return {
+      spiesNumber: Math.floor(this.gameRoom.players.length / 3),
+      discussionSeconds: 300,
+    };
+  }
+
+  areSettingsValid(settings) {
+    if (!Number.isInteger(settings["spiesNumber"])) return false;
+    if (!Number.isInteger(settings["discussionSeconds"])) return false;
+    if (settings["spiesNumber"] <= 0) return false;
+    if (settings["spiesNumber"] > this.gameRoom.players.length) return false;
+    if (settings["discussionSeconds"] <= 0) return false;
+    if (settings["discussionSeconds"] > 3600) return false;
+    
+    return true;
   }
 }
 

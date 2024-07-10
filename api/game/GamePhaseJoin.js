@@ -16,10 +16,8 @@ class GamePhaseJoin extends GamePhase {
   action(player, actionData) {
     if (actionData.phase === "join" && actionData.type == "provideName") {
       let name = actionData.data.name;
-      if (!name) {
-        player.kill("No name in actionData");
-        return
-      }
+      if (!name) return;
+
       name = String(name).trim();
       if (name === "" || name.length > 20) return;
       
@@ -39,6 +37,9 @@ class GamePhaseJoin extends GamePhase {
         player => player.name.length > 0
       ).length >= 4;
       if (!canStart) return;
+      
+      const playersToKick = this.gameRoom.players.filter(player => player.name.length === 0);
+      playersToKick.forEach(playerToKick => this.gameRoom.kickPlayer(playerToKick));
 
       this.gameRoom.logger.info(`Game started`);
       this.gameRoom.gamePhase = new GamePhaseSettings(this.gameRoom);

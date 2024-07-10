@@ -12,6 +12,12 @@ class Player {
   kill(message) {
     this.sockets.forEach(socket => GameRoomUtils.killSocket(socket, message));
   }
+
+  updateGameState(gameState) {
+    this.sockets.forEach(socket => {
+      socket.emit('gameState', gameState);
+    }) 
+  }
 }
 
 
