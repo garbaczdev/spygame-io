@@ -41,9 +41,10 @@ class GamePhaseJoin extends GamePhase {
       const playersToKick = this.gameRoom.players.filter(player => player.name.length === 0);
       playersToKick.forEach(playerToKick => this.gameRoom.kickPlayer(playerToKick));
 
-      this.gameRoom.logger.info(`Game started`);
       this.gameRoom.gamePhase = new GamePhaseSettings(this.gameRoom);
       this.gameRoom.updateAllPlayers();
+      this.gameRoom.logger.info(`Game started`);
+
       return;
     }
 

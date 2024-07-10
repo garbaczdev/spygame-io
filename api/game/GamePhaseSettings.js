@@ -1,4 +1,5 @@
 const { GamePhase } = require('./GamePhase.js');
+const { GamePhaseRoles } = require('./GamePhaseRoles.js');
 
 
 class GamePhaseSettings extends GamePhase {
@@ -29,11 +30,17 @@ class GamePhaseSettings extends GamePhase {
         discussionSeconds: newSettings["discussionSeconds"],
       }
 
+      this.gameRoom.logger.info(`Settings changed to ${JSON.stringify(this.settings)}`);
+
       return;
     }
 
     if (actionData.phase === "settings" && actionData.type == "confirmSettings") {
       if (!player.isHost) return;
+
+      this.gameRoom.gamePhase = new GamePhaseRoles(this.gameRoom, this.settings);
+      this.gameRoom.updateAllPlayers();
+      this.gameRoom.logger.info(`Game proceeded to roles phase`);
 
       return;
     }

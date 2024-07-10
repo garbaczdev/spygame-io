@@ -7,6 +7,8 @@ class Player {
     this.sockets = sockets;
     this.name = name;
     this.isHost = isHost;
+
+    this.role = null;
   }
 
   kill(message) {
@@ -17,6 +19,10 @@ class Player {
     this.sockets.forEach(socket => {
       socket.emit('gameState', gameState);
     }) 
+  }
+  
+  setRole(role) {
+    this.role = role;
   }
 }
 
