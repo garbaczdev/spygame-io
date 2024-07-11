@@ -36,6 +36,7 @@ class GamePhase {
       else player.kill("Game room left");
       return;
     }
+    this.gameRoom.logger.debug(`Unrecognized action: ${JSON.stringify(actionData)} by "${player.name.length > 0 ? player.name : player.deviceId}"`)
   }
 
   addNewPlayer(socket, deviceId) {
