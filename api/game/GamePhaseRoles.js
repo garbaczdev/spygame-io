@@ -1,4 +1,5 @@
 const { GamePhase } = require('./GamePhase.js');
+const { allRoles, Role } = require('./Role.js');
 
 
 class GamePhaseRoles extends GamePhase {
