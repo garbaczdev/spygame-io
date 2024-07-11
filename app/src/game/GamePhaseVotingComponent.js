@@ -1,6 +1,5 @@
 
-export function GamePhaseVotingComponent({socket, gameState}) {
-
+function VotingNotFinishedComponent({socket, gameState}) {
   return (
     <div
       className="d-flex justify-content-center align-items-center vh-100 flex-column"
@@ -53,4 +52,50 @@ export function GamePhaseVotingComponent({socket, gameState}) {
           }
     </div>
   );
+}
+
+
+function VotingFinishedComponent({socket, gameState}) {
+
+  const endVotesCount = gameState.phase.state.endVotesCount;
+
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center vh-100 flex-column"
+      style={{padding: "50px", maxWidth: "100vw"}}
+    >
+      {
+        gameState.phase.state.whoWon === "spies"
+        ?
+        <h1>Spies won!</h1>
+        :
+        <h1>Spies lost!</h1>
+      }
+      {
+        Object.keys(endVotesCount).map(
+          (playerName, index) => 
+          <div 
+            key={index}
+            className="p-3 m-2"
+            style={{
+              fontSize: "30px",
+              ...(
+                gameState.phase.state.votedPlayerName === playerName ? {border: '5px solid blue'} : {border: '2px solid grey'}
+              ),
+              ...(
+                endVotesCount[playerName].isSpy ? {background: '#e74c3c'} : {}
+              ),
+            }}
+          >
+            {`(${endVotesCount[playerName].votes}) ${playerName}`}
+          </div>
+        )
+      }
+    </div>
+  );
+}
+
+export function GamePhaseVotingComponent({socket, gameState}) {
+  if (gameState.phase.state.votingFinished) return <VotingFinishedComponent socket={socket} gameState={gameState} />
+  return <VotingNotFinishedComponent socket={socket} gameState={gameState} />
 }

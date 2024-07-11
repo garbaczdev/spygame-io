@@ -97,8 +97,8 @@ class GamePhaseVoting extends GamePhase {
         const player = this.gameRoom.players.find(player => player.name === playerName);
         return player.isSpy;
       })
-    ) this.whoWon = "spies";
-    else this.whoWon = "roles";
+    ) this.whoWon = "roles";
+    else this.whoWon = "spies";
 
     this.gameRoom.logger.info(`Finished Voting with votes" ${JSON.stringify(this.endVotesCount)}. Winner: "${this.whoWon}"`);
     this.votingFinished = true;
