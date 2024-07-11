@@ -58,7 +58,7 @@ class GameRoom {
       this.gamePhase.addNewPlayer(socket, deviceId);
     }
 
-    const player = this.players.find(player => player.deviceId === deviceId);
+    const player = this.players.find(player => player.deviceId == deviceId);
 
     socket.on('action', actionData => {
       this.logger.debug(`${player.name.length > 0 ? player.name : player.deviceId} - ${JSON.stringify(actionData)}`);
@@ -72,6 +72,12 @@ class GameRoom {
         this.killMePleaseCallback();
       }
     })
+
+    if (player === undefined || player === null) {
+      GameRoomUtils.killSocket(socket, "No player found");
+      this.logger.debug(`Player not found for ${deviceId}`);
+      return;
+    }
 
     socket.emit('gameState', this.gamePhase.getState(player));
   }

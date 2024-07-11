@@ -6,12 +6,17 @@ class GamePhaseDiscussion extends GamePhase {
   constructor(gameRoom, settings) {
     super(gameRoom);
     this.settings = settings;
+
+    this.finishTime = new Date();
+    this.finishTime.setUTCMinutes(this.finishTime.getUTCMinutes() + this.settings.discussionMinutes);
   }
 
   getPhaseState(player) {
     return {
       name: "discussion",
-      state: {}
+      state: {
+        finishTime: this.finishTime.toISOString(),
+      }
     }
   }
 

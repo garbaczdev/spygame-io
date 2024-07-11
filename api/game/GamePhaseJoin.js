@@ -55,7 +55,7 @@ class GamePhaseJoin extends GamePhase {
     if (this.gameRoom.players.find(player => player.deviceId === deviceId)) return;
     const newPlayer = new Player(deviceId, [socket], "", deviceId === this.gameRoom.hostDeviceId);
     this.gameRoom.players.push(newPlayer);
-    this.gameRoom.logger.debug(`New device connected: "${deviceId}"`)
+    this.gameRoom.logger.debug(`New player connected: "${deviceId}"`)
     this.gameRoom.updateAllPlayers()
   }
 }

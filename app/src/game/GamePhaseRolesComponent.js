@@ -9,7 +9,31 @@ export function GamePhaseRolesComponent({socket, gameState}) {
         {
           gameState.player.role.isSpy
           ?
-          <h2>You are a spy!</h2>
+          <>
+            <h2>You are a spy!</h2>
+            {
+              gameState.phase.state.otherSpies.length > 0
+              ?
+              <>
+                <h4 style={{marginTop: "20px"}}>Other spies are:</h4>
+                {
+                  gameState.phase.state.otherSpies.map(
+                    (player, index) => 
+                    <div 
+                      key={index}
+                      className="border p-3 mb-1"
+                    >
+                      {
+                        player.name
+                      }
+                    </div>
+                  )
+                }
+              </>
+              :
+              <></>
+            }
+          </>
           :
           <>
             <h2>Your role is:</h2>
