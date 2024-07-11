@@ -61,8 +61,8 @@ export function GamePhaseJoinComponent({socket, gameState}) {
         </button>
       </div>
       :
-      <div className="row flex-column">
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div className="row flex-column" style={{padding: "50px"}}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <QRCode value={window.location.href} size={256} />
         </div>
         <button 
@@ -73,7 +73,7 @@ export function GamePhaseJoinComponent({socket, gameState}) {
         }>
           Copy Link
         </button>
-        <h1 className="m-5">Players</h1>
+        <h1 className="mt-5 mb-2 text-center">Players</h1>
         {
           gameState.allPlayers.filter(
             player => player.name.length > 0
@@ -96,16 +96,8 @@ export function GamePhaseJoinComponent({socket, gameState}) {
           gameState.player.isHost
           ?
           <button 
-            className={`btn btn-lg ${canStart ? "btn-primary" : "btn-secondary"}`}
-            style={{
-              position: 'fixed',
-              bottom: "10px",
-              left: "0",
-              zIndex: 50,
-              overflow: 'hidden',
-            }}
-            onClick={
-            () => {
+            className={`btn btn-lg mt-5 ${canStart ? "btn-primary" : "btn-secondary"}`}
+            onClick={ () => {
               if (!canStart) return;
               socket.emit("action", {
                 phase: "join",

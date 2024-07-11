@@ -17,11 +17,11 @@ export function GamePhaseSettingsComponent({socket, gameState}) {
       {
         gameState.player.isHost
         ?
-        <div className="container text-center">
+        <div className="d-flex justify-content-center align-items-center vh-100 flex-column">
           <h2 className="mb-2">Settings</h2>
           <h4 className="mb-5">Total players: {gameState.allPlayers.length}</h4>
           <h4>Spies number</h4>
-          <div className="d-flex justify-content-center align-items-center mb-4 mt-2">
+          <div className="d-flex justify-content-center align-items-center mb-4 mt-1">
             <button
               className={`btn mx-2 ${canDecreaseSpies ? "btn-primary" : "btn-secondary"}`}
               onClick={() => {
@@ -37,7 +37,7 @@ export function GamePhaseSettingsComponent({socket, gameState}) {
             >+</button>
           </div>
           <h4>Minutes for discussion</h4>
-          <div className="d-flex justify-content-center align-items-center mb-4 mt-2">
+          <div className="d-flex justify-content-center align-items-center mb-4 mt-1">
             <button
               className={`btn mx-2 ${canDecreaseMinutes ? "btn-primary" : "btn-secondary"}`}
               onClick={() => {
