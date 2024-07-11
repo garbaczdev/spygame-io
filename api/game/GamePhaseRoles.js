@@ -1,4 +1,5 @@
 const { GamePhase } = require('./GamePhase.js');
+const { GamePhaseDiscussion } = require('./GamePhaseDiscussion.js');
 const { allRoles, Role } = require('./Role.js');
 
 
@@ -20,6 +21,10 @@ class GamePhaseRoles extends GamePhase {
   action(player, actionData) {
     if (actionData.phase === "roles" && actionData.type == "startDiscussion") {
       if (!player.isHost) return;
+
+      this.gameRoom.gamePhase = new GamePhaseDiscussion(this.gameRoom, this.settings);
+      this.gameRoom.updateAllPlayers();
+      this.gameRoom.logger.info(`Game proceeded to discussion phase`);
 
       return;
     }

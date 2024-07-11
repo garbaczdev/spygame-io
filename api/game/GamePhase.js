@@ -4,6 +4,7 @@ const { GameRoomUtils } = require('./GameRoomUtils.js');
 class GamePhase {
   constructor(gameRoom) {
     this.gameRoom = gameRoom;
+    this.creationTime = Date.now();
   }
 
   getState(player) {
@@ -18,6 +19,10 @@ class GamePhase {
       player: {
         "name": player.name,
         "isHost": player.isHost,
+        "role": player.role === null ? {} : {
+          "name": player.role.name,
+          "isSpy": player.role.isSpy,
+        },
       },
       phase: this.getPhaseState(player),
     }
