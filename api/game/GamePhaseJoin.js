@@ -43,7 +43,7 @@ class GamePhaseJoin extends GamePhase {
 
       this.gameRoom.gamePhase = new GamePhaseSettings(this.gameRoom);
       this.gameRoom.updateAllPlayers();
-      this.gameRoom.logger.info(`Game started`);
+      this.gameRoom.logger.info(`Settings phase started`);
 
       return;
     }
