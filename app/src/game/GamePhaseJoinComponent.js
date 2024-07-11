@@ -61,54 +61,55 @@ export function GamePhaseJoinComponent({socket, gameState}) {
         </button>
       </div>
       :
-      <div className="row flex-column" style={{padding: "50px"}}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <QRCode value={window.location.href} size={256} />
-        </div>
-        <button 
-          className="btn btn-primary btn-lg mt-5"
-          style={{ width: 'auto' }} 
-          onClick={
-          () => navigator.clipboard.writeText(window.location.href)
-        }>
-          Copy Link
-        </button>
-        <h1 className="mt-5 mb-2 text-center">Players</h1>
-        {
-          gameState.allPlayers.filter(
-            player => player.name.length > 0
-          ).map(
-            (player, index) => 
-            <div 
-              key={index}
-              className="border p-3 mb-1"
-              style={{ width: '80vw' }}
-            >
-              {
-                player.name
-                + (player.isCurrentPlayer ? " (You) " : "")
-                + (player.isHost ? " (Host) " : "")
-              }
-            </div>
-          )
-        }
-        {
-          gameState.player.isHost
-          ?
+      <div style={{overflowX: "hidden"}}>
+        <div className="row flex-column" style={{padding: "50px", maxWidth: "100vw"}}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <QRCode value={window.location.href} size={256} />
+          </div>
           <button 
-            className={`btn btn-lg mt-5 ${canStart ? "btn-primary" : "btn-secondary"}`}
-            onClick={ () => {
-              if (!canStart) return;
-              socket.emit("action", {
-                phase: "join",
-                type: "startGame",
-                data: {}
-              });
-            }
-          }> Start Game </button>
-          :
-          <></>
-        }
+            className="btn btn-primary btn-lg mt-5"
+            style={{ width: 'auto' }} 
+            onClick={
+            () => navigator.clipboard.writeText(window.location.href)
+          }>
+            Copy Link
+          </button>
+          <h1 className="mt-5 mb-2 text-center">Players</h1>
+          {
+            gameState.allPlayers.filter(
+              player => player.name.length > 0
+            ).map(
+              (player, index) => 
+              <div 
+                key={index}
+                className="border p-3 mb-1"
+              >
+                {
+                  player.name
+                  + (player.isCurrentPlayer ? " (You) " : "")
+                  + (player.isHost ? " (Host) " : "")
+                }
+              </div>
+            )
+          }
+          {
+            gameState.player.isHost
+            ?
+            <button 
+              className={`btn btn-lg mt-5 ${canStart ? "btn-primary" : "btn-secondary"}`}
+              onClick={ () => {
+                if (!canStart) return;
+                socket.emit("action", {
+                  phase: "join",
+                  type: "startGame",
+                  data: {}
+                });
+              }
+            }> Start Game </button>
+            :
+            <></>
+          }
+        </div>
       </div>
     }
     </>
