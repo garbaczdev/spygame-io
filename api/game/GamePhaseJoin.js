@@ -35,7 +35,7 @@ class GamePhaseJoin extends GamePhase {
 
       const canStart = this.gameRoom.players.filter(
         player => player.name.length > 0
-      ).length >= 4;
+      ).length >= 3;
       if (!canStart) return;
       
       const playersToKick = this.gameRoom.players.filter(player => player.name.length === 0);

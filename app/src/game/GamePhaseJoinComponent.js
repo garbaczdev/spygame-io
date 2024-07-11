@@ -8,7 +8,7 @@ export function GamePhaseJoinComponent({socket, gameState}) {
 
   const canStart = gameState.allPlayers.filter(
     player => player.name.length > 0
-  ).length >= 4;
+  ).length >= 3;
 
   const [canCreateUser, reason] = (() => {
     const name = nameInputValue;

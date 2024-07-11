@@ -15,8 +15,12 @@ class GamePhaseRoles extends GamePhase {
     return {
       name: "roles",
       state: player.role.isSpy ? {
-        otherSpies: this.gameRoom.players.map(
-          otherPlayer => ({name: otherPlayer.name, isSpy: otherPlayer.role.isSpy})
+        otherSpies: this.gameRoom.players.filter(
+          otherPlayer => otherPlayer.role.isSpy
+        ).map(
+          otherPlayer => otherPlayer.name
+        ).filter(
+          otherPlayerName => otherPlayerName !== player.name
         )
       } : {}
     }
