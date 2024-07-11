@@ -12,9 +12,20 @@ class GameRoom {
     this.killMePleaseCallback = killMePleaseCallback;
 
     this.creationTime = Date.now();
-
-    this.gamePhase = new GamePhaseJoin(this);
+    this.gamePhase = null;
     this.players = [];
+    this.setupNewRoom();
+
+    this.logger.info(`New GameRoom "${id}"`)
+  }
+  
+  setupNewRoom() {
+    this.creationTime = Date.now();
+    this.players.forEach(player => {
+      player.name = "";
+      player.role = null;
+    });
+    this.gamePhase = new GamePhaseJoin(this);
     
     if (process.env.INSERT_MOCK_PLAYERS === '1') {
       for (let i = 1; i <= 6; i++) this.players.push(new Player(String(i), [], `Player ${i}`, false))
@@ -43,8 +54,8 @@ class GameRoom {
         }),
       ],
     });
-    
-    this.logger.info(`New GameRoom "${id}"`)
+
+    this.updateAllPlayers();
   }
 
   addSocket(socket, deviceId) {

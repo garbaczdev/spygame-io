@@ -91,6 +91,19 @@ function VotingFinishedComponent({socket, gameState}) {
           </div>
         )
       }
+      <button 
+        className="btn btn-lg btn-primary m-4"
+        onClick={
+        () => {
+          socket.emit("action", {
+            phase: "voting",
+            type: "restartGame",
+            data: {}
+          });
+        }
+      }>
+        Play again
+      </button>
     </div>
   );
 }

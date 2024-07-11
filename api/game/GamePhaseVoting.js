@@ -71,7 +71,7 @@ class GamePhaseVoting extends GamePhase {
     if (actionData.phase === "voting" && actionData.type == "restartGame") {
       if (!player.isHost) return;
       if (!this.votingFinished) return;
-
+      this.gameRoom.setupNewRoom();
       return;
     }
     super.action(player, actionData);
@@ -95,7 +95,7 @@ class GamePhaseVoting extends GamePhase {
         playerName => this.endVotesCount[playerName] === maxVotes
       ).every(playerName => {
         const player = this.gameRoom.players.find(player => player.name === playerName);
-        return player.isSpy;
+        return player.role.isSpy;
       })
     ) this.whoWon = "roles";
     else this.whoWon = "spies";
