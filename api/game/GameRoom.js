@@ -62,10 +62,14 @@ class GameRoom {
 
     socket.on('action', actionData => {
       this.logger.debug(`${player.name.length > 0 ? player.name : player.deviceId} - ${JSON.stringify(actionData)}`);
-      if (!actionData.phase) {
-        GameRoomUtils.killSocket(socket, `action data validation error`);
-      } else {
+      if (!actionData.phase) return;
+      if (!actionData.type) return;
+      if (!actionData.data) return;
+      try {
         this.gamePhase.action(player, actionData);
+      } catch (error) {
+        this.logger.error(error.message + " - " + error.stack);
+        this.killMePleaseCallback();
       }
     })
 
