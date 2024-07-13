@@ -4,7 +4,7 @@ import QRCode from 'qrcode.react';
 
 
 export function GamePhaseJoinComponent({socket, gameState}) {
-  const [nameInputValue, setNameInputValue] = useState("");
+  const [nameInputValue, setNameInputValue] = useState(localStorage.getItem("lastName") || "");
 
   const canStart = gameState.allPlayers.filter(
     player => player.name.length > 0
@@ -48,6 +48,7 @@ export function GamePhaseJoinComponent({socket, gameState}) {
           onClick={
           () => {
             if (!canCreateUser) return;
+            localStorage.setItem("lastName", nameInputValue);
             socket.emit("action", {
               phase: "join",
               type: "provideName",
