@@ -25,6 +25,13 @@ export function GamePhaseRolesComponent({socket, gameState}) {
               <>
                 <GiSpy style={{ fontSize: '200px' }} />
                 <h2>You are a spy!</h2>
+
+                <h4 style={{marginTop: "10px"}}>Role hint:</h4>
+                <div
+                  style={{border: "2px solid black", padding: "20px"}}  
+                >
+                  <h4>{gameState.phase.state.roleHint}</h4>
+                </div>
                 {
                   gameState.phase.state.otherSpies.length > 0
                   ?

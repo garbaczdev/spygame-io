@@ -1,43 +1,265 @@
 [
-    "Medieval Knights at a Tournament",
-    "Space Explorers on a Distant Planet",
-    "Ancient Egyptian Priests in a Temple",
-    "Detectives in 1920 London",
-    "Outlaws in the Wild West",
-    "Vikings on a Raid",
-    "Pirates on a Treasure Hunt",
-    "Ancient Greek Philosophers in a Symposium",
-    "Wizards in a Magical Academy (like Harry Potter)",
-    "Roman Gladiators in the Colosseum",
-    "Samurai in Feudal Japan",
-    "Survivors in a Post-Apocalyptic World",
-    "Secret Agents on a Mission",
-    "Medieval Peasants in a Village",
-    "Royal Court Members in a Palace",
-    "Pilgrims on a Spiritual Journey",
-    "Scientists in a Research Lab",
-    "Robots in a Futuristic Society",
-    "Aliens on an Intergalactic Mission",
-    "Knights of the Round Table",
-    "Medieval Monks in a Monastery",
-    "Country representatives on an ONZ meeting",
-    "Explorers in the Amazon Jungle (like Indiana Johnes)",
-    "Plane crash survivors on a Deserted Island",
-    "Medieval Traders on the Silk Road",
-    "Fantasy Adventurers in a Dungeon",
-    "Noble Families in Renaissance England",
-    "Astronauts on a Space Station",
-    "Modern Vampires (like in Twilight)",
-    "Medieval Knights in a Dragon's Lair",
-    "Mythical Gods in Ancient Olympus",
-    "Space Traders in a Galactic Market",
-    "Medieval Healers in a Plague Village",
-    "Cowboys in the Old West",
-    "Roman Senators in Ancient Rome",
-    "High School Students in a Haunted School",
-    "Survivors in a Nuclear Wasteland",
-    "Fantasy Dwarven Smiths in a Dwarven Forge",
-    "Forest Elves collecting food",
-    "Native Americans Fighting Colonization",
-    "Modern Day Superheroes in New York City (like The Boys)"
+  {
+    "role": "Medieval Knights at a Jousting Tournament",
+    "hints": [
+      "Medieval feasts and gatherings are so fascinating, don't you think?",
+      "Loyalty and service to a higher cause are values I deeply admire.",
+      "Wearing armor must feel really empowering."
+    ]
+  },
+  {
+    "role": "Space Explorers on a Distant Planet",
+    "hints": [
+      "Discovering new places always gives me a thrill.",
+      "Advanced technology and equipment can be so impressive.",
+      "Keeping in touch with home is crucial, isn't it?",
+      "Exploring unknown lands is my dream.",
+      "Looking up at the stars makes me wonder about other worlds."
+    ]
+  },
+  {
+    "role": "Ancient Egyptian Priests in a Temple",
+    "hints": [
+      "Rituals and ceremonies hold so much importance in some cultures.",
+      "Certain animals and symbols seem to have deep meanings.",
+      "Specific structures can be incredibly significant.",
+      "Ancient languages and writings are so intriguing."
+    ]
+  },
+  {
+    "role": "Detectives in 1880 London (Like Sherlock Holmes)",
+    "hints": [
+      "Observation and attention to detail are crucial skills.",
+      "I love the charm of 19th century London.",
+      "Solving puzzles is fun."
+    ]
+  },
+  {
+    "role": "Outlaws in the Wild West",
+    "hints": [
+      "Life on the move and avoiding authorities sounds adventurous.",
+      "Vast, open landscapes and frontier towns are so charming.",
+      "A disdain for strict rules and societal norms can be liberating.",
+      "Wild horses and open plains seem so free."
+    ]
+  },
+  {
+    "role": "Vikings on a Raid",
+    "hints": [
+      "Seafaring and navigating waters is an impressive skill.",
+      "Strength and bravery are virtues I admire.",
+      "Harsh, cold climates and rugged terrain build character."
+    ]
+  },
+  {
+    "role": "Pirates on a Treasure Hunt",
+    "hints": [
+      "Exotic locations and dangerous adventures are thrilling.",
+      "Avoiding or outsmarting authorities adds to the excitement.",
+      "Navigating waters is an impressive skill."
+    ]
+  },
+  {
+    "role": "Ancient Greek Philosophers",
+    "hints": [
+      "Gathering with peers to share ideas is enriching.",
+      "Examining the nature of reality is profound.",
+      "Ancient wisdom has a lot to teach us.",
+      "Discussions and debates help us grow."
+    ]
+  },
+  {
+    "role": "Wizards in a Magical Academy (like Harry Potter)",
+    "hints": [
+      "Magical creatures or phenomena are fascinating.",
+      "Quite a special school.",
+      "Secret passages and hidden rooms sound fun."
+    ]
+  },
+  {
+    "role": "Roman Gladiators in the Colosseum",
+    "hints": [
+      "Rigorous training and physical challenges are demanding.",
+      "Striving for glory through combat is inspiring.",
+      "Fighting for honor and survival takes courage."
+    ]
+  },
+  {
+    "role": "Samurai in Feudal Japan",
+    "hints": [
+      "Honor and duty are my virtues.",
+      "Combat strength is what I admire.",
+      "My life belongs to my lord."
+    ]
+  },
+  {
+    "role": "Survivors in a Post-Apocalyptic World",
+    "hints": [
+      "Scavenging for supplies is essential.",
+      "Every day is a fight for survival.",
+      "The world is so different now."
+    ]
+  },
+  {
+    "role": "Ninjas on a mission in feudal Japan",
+    "hints": [
+      "Maintaining a cover is key.",
+      "I am on a secret mission.",
+      "I originate from Japan"
+    ]
+  },
+  {
+    "role": "Medieval Peasants in a Village",
+    "hints": [
+      "Living simply in a small village is common.",
+      "Serving the lord is my role.",
+      "Working hard to make ends meet."
+    ]
+  },
+  {
+    "role": "Pilgrims on a Spiritual Journey",
+    "hints": [
+      "Faith and devotion guide the way.",
+      "Overcoming hardships on the path.",
+      "Seeking spiritual enlightenment.",
+      "Meeting fellow travelers on the road."
+    ]
+  },
+  {
+    "role": "Scientists in a Research Lab",
+    "hints": [
+      "Discovering new things is the goal.",
+      "Using advanced equipment daily.",
+      "Pushing the boundaries of humanity."
+    ]
+  },
+  {
+    "role": "Robots in a Futuristic Society",
+    "hints": [
+      "Coexisting with humans.",
+      "Advanced technology is everywhere.",
+      "Futuristic cities are amazing."
+    ]
+  },
+  {
+    "role": "Aliens on a discovery mission on Earth",
+    "hints": [
+      "Exploring the world is exciting.",
+      "Human technology is fascinating.",
+      "Missions to other worlds are challenging."
+    ]
+  },
+  {
+    "role": "Medieval Monks in a Monastery",
+    "hints": [
+      "Living a life of prayer.",
+      "Serving god.",
+      "Maintaining a vow."
+    ]
+  },
+  {
+    "role": "Country Representatives at a UN Meeting",
+    "hints": [
+      "Diplomacy is key to discussions.",
+      "Facing global issues.",
+      "Negotiating and reaching agreements."
+    ]
+  },
+  {
+    "role": "Plane Crash Survivors on a Deserted Island",
+    "hints": [
+      "Finding fresh water is crucial.",
+      "Staying hopeful for help.",
+      "Surviving together as a group."
+    ]
+  },
+  {
+    "role": "Traders on the Silk Road",
+    "hints": [
+      "Traveling in caravans for safety.",
+      "Silk and spices are valuable items."
+    ]
+  },
+  {
+    "role": "Fantasy Adventurers in a Dungeon",
+    "hints": [
+      "Fighting monsters is a big challenge.",
+      "Searching for magical artifacts.",
+      "Facing traps and puzzles."
+    ]
+  },
+  {
+    "role": "Classic Noble Families",
+    "hints": [
+      "Living in grand manors.",
+      "Attending elegant balls.",
+      "Dressing in fine clothing."
+    ]
+  },
+  {
+    "role": "Astronauts on a Space Station",
+    "hints": [
+      "Home is far away.",
+      "Incredibly Dangerous Environment",
+      "Only the selected elite can do this job."
+    ]
+  },
+  {
+    "role": "Modern Vampires (like in Twilight)",
+    "hints": [
+      "Prefers the night.",
+      "Having superhuman abilities.",
+      "Blending in with humans."
+    ]
+  },
+  {
+    "role": "Mythical Greek Gods",
+    "hints": [
+      "Having extraordinary powers.",
+      "Everyone here is a family.",
+      "Immortal."
+    ]
+  },
+  {
+    "role": "Plague Doctors",
+    "hints": [
+      "Wearing protective clothing.",
+      "Facing the crisis.",
+      "Helping other humans."
+    ]
+  },
+  {
+    "role": "Old West Cowboys",
+    "hints": [
+      "Riding horses across the plains.",
+      "Wearing a very distinctive clothing",
+      "19th century",
+      "Rounding up cattle."
+    ]
+  },
+  {
+    "role": "Ancient Rome Senators",
+    "hints": [
+      "Debating important things.",
+      "Serving the Republic.",
+      "Influencing political decisions."
+    ]
+  },
+  {
+    "role": "Fantasy Dwarven Smiths",
+    "hints": [
+      "Crafting powerful weapons.",
+      "Mining precious ores.",
+      "Short yet Strong.",
+      "Pride in craftsmanship."
+    ]
+  },
+  {
+    "role": "Modern Day Superheroes in New York City (like The Boys)",
+    "hints": [
+      "Having superhuman abilities.",
+      "Fighting crime.",
+      "Maintaining a cover is key."
+    ]
+  }
 ]

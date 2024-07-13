@@ -14,15 +14,23 @@ class GamePhaseRoles extends GamePhase {
   getPhaseState(player) {
     return {
       name: "roles",
-      state: player.role.isSpy ? {
-        otherSpies: this.gameRoom.players.filter(
-          otherPlayer => otherPlayer.role.isSpy
-        ).map(
-          otherPlayer => otherPlayer.name
-        ).filter(
-          otherPlayerName => otherPlayerName !== player.name
-        )
-      } : {}
+      state: { 
+        roleHint: player.role.hint, 
+        ...(
+          player.role.isSpy 
+          ?
+          {
+            otherSpies: this.gameRoom.players.filter(
+              otherPlayer => otherPlayer.role.isSpy
+            ).map(
+              otherPlayer => otherPlayer.name
+            ).filter(
+              otherPlayerName => otherPlayerName !== player.name
+            )
+          } 
+          :
+          {}
+        )}
     }
   }
 
@@ -40,16 +48,20 @@ class GamePhaseRoles extends GamePhase {
   }
 
   distributeRoles() {
-    const roleName = allRoles[Math.floor(Math.random() * allRoles.length)];
+    const role = allRoles[Math.floor(Math.random() * allRoles.length)];
 
     const shuffledPlayers = this.gameRoom.players.slice().sort(() => 0.5 - Math.random());
 
     const spyPlayers = shuffledPlayers.slice(0, this.settings.spiesNumber);
     const normalPlayers = shuffledPlayers.slice(this.settings.spiesNumber, shuffledPlayers.length);
     
-    spyPlayers.forEach(player => player.setRole(new Role("", true)));
-    normalPlayers.forEach(player => player.setRole(new Role(roleName, false)));
-    this.gameRoom.logger.info(`ROLE: "${roleName}" SPIES: [${spyPlayers.map(player => player.name)}] NORMAL: [${normalPlayers.map(player => player.name)}]`);
+    spyPlayers.forEach(player => {
+      const randomHint = role.hints.length > 0 ? role.hints[Math.floor(Math.random() * role.hints.length)] : "";
+      player.setRole(new Role("", true, randomHint));
+    });
+
+    normalPlayers.forEach(player => player.setRole(new Role(role.role, false, "")));
+    this.gameRoom.logger.info(`ROLE: "${role.role}" SPIES: [${spyPlayers.map(player => player.name)}] NORMAL: [${normalPlayers.map(player => player.name)}]`);
   }
 }
 
