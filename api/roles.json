@@ -1,6 +1,6 @@
 [
   {
-    "role": "Medieval Knights at a Jousting Tournament",
+    "role": "Medieval Knights",
     "hints": [
       "Medieval feasts and gatherings are so fascinating, don't you think?",
       "Loyalty and service to a higher cause are values I deeply admire.",
@@ -8,7 +8,7 @@
     ]
   },
   {
-    "role": "Space Explorers on a Distant Planet",
+    "role": "Space Explorers",
     "hints": [
       "Discovering new places always gives me a thrill.",
       "Advanced technology and equipment can be so impressive.",
@@ -18,7 +18,7 @@
     ]
   },
   {
-    "role": "Ancient Egyptian Priests in a Temple",
+    "role": "Ancient Egyptian Priests",
     "hints": [
       "Rituals and ceremonies hold so much importance in some cultures.",
       "Certain animals and symbols seem to have deep meanings.",
@@ -27,7 +27,7 @@
     ]
   },
   {
-    "role": "Detectives in 1880 London (Like Sherlock Holmes)",
+    "role": "1880 London Detectives (Like Sherlock Holmes)",
     "hints": [
       "Observation and attention to detail are crucial skills.",
       "I love the charm of 19th century London.",
@@ -35,7 +35,7 @@
     ]
   },
   {
-    "role": "Outlaws in the Wild West",
+    "role": "Wild West Outlaws",
     "hints": [
       "Life on the move and avoiding authorities sounds adventurous.",
       "Vast, open landscapes and frontier towns are so charming.",
@@ -44,7 +44,7 @@
     ]
   },
   {
-    "role": "Vikings on a Raid",
+    "role": "Vikings",
     "hints": [
       "Seafaring and navigating waters is an impressive skill.",
       "Strength and bravery are virtues I admire.",
@@ -52,7 +52,7 @@
     ]
   },
   {
-    "role": "Pirates on a Treasure Hunt",
+    "role": "Pirates",
     "hints": [
       "Exotic locations and dangerous adventures are thrilling.",
       "Avoiding or outsmarting authorities adds to the excitement.",
@@ -69,7 +69,7 @@
     ]
   },
   {
-    "role": "Wizards in a Magical Academy (like Harry Potter)",
+    "role": "Hogwarts Students",
     "hints": [
       "Magical creatures or phenomena are fascinating.",
       "Quite a special school.",
@@ -77,7 +77,7 @@
     ]
   },
   {
-    "role": "Roman Gladiators in the Colosseum",
+    "role": "Roman Gladiators",
     "hints": [
       "Rigorous training and physical challenges are demanding.",
       "Striving for glory through combat is inspiring.",
@@ -93,7 +93,7 @@
     ]
   },
   {
-    "role": "Survivors in a Post-Apocalyptic World",
+    "role": "Post-Apocalyptic World Survivors",
     "hints": [
       "Scavenging for supplies is essential.",
       "Every day is a fight for survival.",
@@ -101,7 +101,7 @@
     ]
   },
   {
-    "role": "Ninjas on a mission in feudal Japan",
+    "role": "Ninjas",
     "hints": [
       "Maintaining a cover is key.",
       "I am on a secret mission.",
@@ -109,7 +109,7 @@
     ]
   },
   {
-    "role": "Medieval Peasants in a Village",
+    "role": "Medieval Peasants",
     "hints": [
       "Living simply in a small village is common.",
       "Serving the lord is my role.",
@@ -117,7 +117,7 @@
     ]
   },
   {
-    "role": "Pilgrims on a Spiritual Journey",
+    "role": "Pilgrims",
     "hints": [
       "Faith and devotion guide the way.",
       "Overcoming hardships on the path.",
@@ -126,7 +126,7 @@
     ]
   },
   {
-    "role": "Scientists in a Research Lab",
+    "role": "Scientists",
     "hints": [
       "Discovering new things is the goal.",
       "Using advanced equipment daily.",
@@ -134,7 +134,7 @@
     ]
   },
   {
-    "role": "Robots in a Futuristic Society",
+    "role": "Futuristic Society Robots",
     "hints": [
       "Coexisting with humans.",
       "Advanced technology is everywhere.",
@@ -142,15 +142,15 @@
     ]
   },
   {
-    "role": "Aliens on a discovery mission on Earth",
+    "role": "Undercover aliens on earth",
     "hints": [
-      "Exploring the world is exciting.",
-      "Human technology is fascinating.",
-      "Missions to other worlds are challenging."
+      "Maintaining a cover is key.",
+      "People can not know about us.",
+      "Human technology is fascinating."
     ]
   },
   {
-    "role": "Medieval Monks in a Monastery",
+    "role": "Monastery Monks",
     "hints": [
       "Living a life of prayer.",
       "Serving god.",
@@ -158,7 +158,7 @@
     ]
   },
   {
-    "role": "Country Representatives at a UN Meeting",
+    "role": "UN Meeting Country Representatives",
     "hints": [
       "Diplomacy is key to discussions.",
       "Facing global issues.",
@@ -174,7 +174,7 @@
     ]
   },
   {
-    "role": "Traders on the Silk Road",
+    "role": "Silk Road Traders",
     "hints": [
       "Traveling in caravans for safety.",
       "Silk and spices are valuable items."
@@ -189,7 +189,7 @@
     ]
   },
   {
-    "role": "Classic Noble Families",
+    "role": "Medieval/Reneissance Nobility",
     "hints": [
       "Living in grand manors.",
       "Attending elegant balls.",
@@ -229,7 +229,7 @@
     ]
   },
   {
-    "role": "Old West Cowboys",
+    "role": "Wild West Cowboys",
     "hints": [
       "Riding horses across the plains.",
       "Wearing a very distinctive clothing",
