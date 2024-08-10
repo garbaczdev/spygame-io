@@ -14,4 +14,6 @@ RUN npm install
 COPY . .
 
 # Define the command to run the app
-CMD ["npm", "run", "build"]
+
+RUN npm run build
+RUN chown -R 1000:1000 /usr/src/app/build
