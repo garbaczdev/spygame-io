@@ -1,17 +1,22 @@
 
 services:
   api:
-    build: ./api
-    ports:
+    build:
+      context: ./api
+    expose:
       - "5000:5000"
+    networks:
+      - app_network
 
   app:
     build:
       context: ./app
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - "80:3000"
-    depends_on:
-      - api
     volumes:
-      - ./app:/usr/src/app
+      - app_static_files:/usr/src/app/build
+
+
+networks:
+  app_network:
+
+volumes:
+  app_static_files:
