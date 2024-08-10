@@ -19,8 +19,10 @@ export function GameRoomPage() {
     // Open a new socket connection
     const socket = io(window.location.origin, {
       autoConnect: true,
-      reconnectionAttempts: 5, // Attempt to reconnect 5 times
-      reconnectionDelay: 1000,  // Wait 1 second between reconnection attempts
+      reconnection: true,
+      reconnectionAttempts: 1000000000, // Attempt to reconnect 5 times
+      reconnectionDelay: 500,  // Wait 1 second between reconnection attempts
+      reconnectionDelayMax: 2000,
       query: {
         gameRoomId 
       }
@@ -38,8 +40,25 @@ export function GameRoomPage() {
 
     setSocket(socket);
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        if (!socket.connected) {
+          console.log('App is visible. Attempting to reconnect...');
+          socket.connect(); // Try to reconnect when the app becomes visible
+        }
+      } else {
+        // Optional: Disconnect the socket when the app goes to the background
+        console.log('App is not visible. Disconnecting...');
+        socket.disconnect();
+      }
+    };
+
+    // Listen for the visibility change event
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     // Cleanup function to close the socket connection
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (socket) {
         socket.off('connect');
         socket.off('disconnect');
@@ -51,7 +70,7 @@ export function GameRoomPage() {
   return (
     <>
     {
-      socket && Object.entries(gameState).length > 0
+      socket && socket.connected && Object.entries(gameState).length > 0
       ?
       <>
         <Navbar
@@ -106,7 +125,7 @@ export function GameRoomPage() {
         <GamePhaseComponent socket={socket} gameState={gameState} />
       </>
       :
-      <></>
+      <h1>Reconnecting...</h1>
     }
     </>
   );
