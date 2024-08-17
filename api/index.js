@@ -23,7 +23,11 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/api/device-id', (req, res) => {
-  const deviceId = crypto.randomBytes(64).toString('hex').slice(0, 64);
+  let { deviceId } = req.cookies;
+  if (!deviceId) {
+    deviceId = crypto.randomBytes(64).toString('hex').slice(0, 64);
+  };
+
   res.cookie(
     'deviceId',
     deviceId,
