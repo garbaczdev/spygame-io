@@ -17,7 +17,7 @@ export function App() {
       fetch('/api/device-id')
         .then(response => response.text())
         .then(receivedDeviceId => {
-          setDeviceId(receivedDeviceId);
+          if (!deviceId) setDeviceId(receivedDeviceId);
         });
     }
   }, [deviceId]);
