@@ -117,7 +117,7 @@ class GameRoom {
   canBeDeleted() {
     const minutesSinceCreation = Math.floor((new Date() - this.creationTime) / 1000 / 60);
     if (
-      minutesSinceCreation > 60
+      minutesSinceCreation > 240
     ) return true;
     if (
       this.players.every(player => player.sockets.length === 0)
