@@ -3,6 +3,23 @@ const { GamePhaseDiscussion } = require('./GamePhaseDiscussion.js');
 const { allRoles, Role } = require('./Role.js');
 
 
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
+
 class GamePhaseRoles extends GamePhase {
 
   constructor(gameRoom, settings) {
@@ -50,7 +67,9 @@ class GamePhaseRoles extends GamePhase {
   distributeRoles() {
     const role = allRoles[Math.floor(Math.random() * allRoles.length)];
 
-    const shuffledPlayers = this.gameRoom.players.slice().sort(() => 0.5 - Math.random());
+    const shuffledPlayers = this.gameRoom.players.slice();
+    shuffle(shuffledPlayers);
+    // const shuffledPlayers = this.gameRoom.players.slice().sort(() => 0.5 - Math.random());
 
     const spyPlayers = shuffledPlayers.slice(0, this.settings.spiesNumber);
     const normalPlayers = shuffledPlayers.slice(this.settings.spiesNumber, shuffledPlayers.length);
