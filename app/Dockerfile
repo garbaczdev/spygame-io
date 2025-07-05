@@ -13,7 +13,4 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
-# Define the command to run the app
-RUN rm -rf /usr/src/build/*
-RUN npm run build
-RUN chown -R 1000:1000 /usr/src/app/build
+ENTRYPOINT ["/bin/sh", "build.sh"]
