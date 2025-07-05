@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { Navbar, Button } from 'react-bootstrap';
 import io from 'socket.io-client';
+import QRCode from 'qrcode.react';
 
 import { GamePhaseComponent } from './game/GamePhaseComponent.js';
 
@@ -106,7 +107,10 @@ export function GameRoomPage() {
             transition: "top 0.3s ease-in-out",
           }}
         >
-          <div className="container text-center d-flex justify-content-center align-items-center vh-100">
+          <div className="container text-center d-flex flex-column justify-content-center align-items-center vh-100">
+            <div style={{paddingBottom: '50px'}}>
+              <QRCode value={window.location.href} size={256} />
+            </div>
             <div>
               <button 
                 className="btn btn-lg btn-danger"
