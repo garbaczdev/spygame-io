@@ -40,7 +40,9 @@ class GameRoomManager {
 
     socket.on('disconnect', () => {
       const gameRoom = this.gameRooms[gameRoomId];
-      if (gameRoom) gameRoom.removeSocket(socket, deviceId);
+      if (!gameRoom) return;
+
+      gameRoom.removeSocket(socket, deviceId);
       if (gameRoom.canBeDeleted()) {
         this.deleteRoom(gameRoomId);
       }

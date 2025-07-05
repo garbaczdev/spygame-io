@@ -33,7 +33,7 @@ class GamePhase {
   action(player, actionData) {
     if (actionData.phase === "all" && actionData.type == "leaveRoom") {
       if (player.isHost) this.gameRoom.killMePleaseCallback();
-      else player.kill("Game room left");
+      player.kill("Game room left");
       return;
     }
     this.gameRoom.logger.debug(`Unrecognized action: ${JSON.stringify(actionData)} by "${player.name.length > 0 ? player.name : player.deviceId}"`)
