@@ -117,18 +117,15 @@ class GameRoom {
   canBeDeleted() {
     const minutesSinceCreation = Math.floor((new Date() - this.creationTime) / 1000 / 60);
     if (
-      minutesSinceCreation > 240
-    ) return true;
-    if (
-      this.players.every(player => player.sockets.length === 0)
-      && this.players.every(player => player.name.length === 0)
+      minutesSinceCreation > 60*24
     ) return true;
     
     return false;
   }
 
   kill() {
-    this.players.forEach(player => player.kill("Game room closed!"));
+    // BUGFIX: This causes to kick players from their new games!
+    // this.players.forEach(player => player.kill("Game room closed!"));
     this.players = [];
     this.hostDeviceId = "";
     this.logger.info("Killed game room");

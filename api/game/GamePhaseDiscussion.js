@@ -48,7 +48,6 @@ class GamePhaseDiscussion extends GamePhase {
     if (actionData.phase === "discussion" && actionData.type == "addMinute") {
       if (!player.isHost) return;
       this.finishTime.setUTCMinutes(this.finishTime.getUTCMinutes() + 1);
-      console.log(`Increased to ${this.finishTime}`);
       this.gameRoom.updateAllPlayers();
       return;
     }
