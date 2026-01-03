@@ -115,12 +115,13 @@ class GameRoom {
   }
 
   canBeDeleted() {
-    const minutesSinceCreation = Math.floor((new Date() - this.creationTime) / 1000 / 60);
-    if (
-      minutesSinceCreation > 60*24
-    ) return true;
-    
     return false;
+    // const minutesSinceCreation = Math.floor((new Date() - this.creationTime) / 1000 / 60);
+    // if (
+    //   minutesSinceCreation > 60*24
+    // ) return true;
+    
+    // return false;
   }
 
   kill() {
